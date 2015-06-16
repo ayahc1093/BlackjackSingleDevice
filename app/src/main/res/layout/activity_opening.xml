@@ -9,6 +9,15 @@
     tools:context=".MainActivity"
     android:id="@+id/RL">
 
+
+    <ImageView
+        android:id="@+id/blackJackImage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/rsz_blackjackimage"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
     <TextView
         android:id="@+id/textView"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -17,33 +26,24 @@
         android:text="@string/welcome_message"
         android:layout_gravity="center"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp" />
-
-    <ImageView
-        android:id="@+id/blackJackImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/rsz_blackjackimage"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/numberOfPlayers"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="fill_parent"
         android:text="How many players at the table?"
         android:layout_above="@+id/spinner"
         android:layout_centerHorizontal="true" />
+    <!--Removed the following from TextView @+id/numberOfPlayers-->
+    <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
-        android:layout_above="@+id/btnPlay"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignBottom="@+id/blackJackImage"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/btnPlay"
@@ -51,7 +51,8 @@
         android:layout_height="wrap_content"
         android:text="Play"
         android:onClick="startGame"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignBottom="@+id/blackJackImage"
+        android:layout_alignRight="@+id/blackJackImage"
+        android:layout_alignEnd="@+id/blackJackImage" />
 
 </RelativeLayout>

@@ -1,17 +1,27 @@
 package com.example.student.blackjacksingledevice;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
-public class GamePlayActivity extends ActionBarActivity {
+public class GamePlayActivity extends Activity {
 
+    ArrayList<String> allNames = new ArrayList<String>(); //To store values of EditTexts (names)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_play);
+
+        //Toast message shows up empty: probably need to change the following, also on SetupGameActivity.java
+        allNames = getIntent().getStringArrayListExtra("all");
+        for (int i = 0; i < allNames.size(); i++) {
+            Toast.makeText(GamePlayActivity.this, allNames.get(i), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

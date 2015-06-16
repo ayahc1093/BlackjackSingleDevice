@@ -46,7 +46,7 @@ public class OpeningActivity extends Activity {
 
     public void startGame(View view) {
         intent.putExtra("numofplayers", splode);
-        setResult(RESULT_OK, intent);
+        //setResult(RESULT_OK, intent);
         startActivity(this.intent);
     }
 
