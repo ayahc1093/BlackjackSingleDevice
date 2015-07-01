@@ -2,7 +2,6 @@ package com.example.student.blackjacksingledevice;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +32,7 @@ public class OpeningActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 splode=numPlayers[position];
-                Toast.makeText(OpeningActivity.this, "You selected: " + numPlayers[position], Toast.LENGTH_SHORT).show();
+                //Toast.makeText(OpeningActivity.this, "You selected: " + numPlayers[position], Toast.LENGTH_SHORT).show();
                 }
 
             @Override

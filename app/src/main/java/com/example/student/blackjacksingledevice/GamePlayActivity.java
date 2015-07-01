@@ -5,22 +5,24 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-
 
 public class GamePlayActivity extends Activity {
 
-    ArrayList<String> allNames = new ArrayList<String>(); //To store values of EditTexts (names)
+    ArrayList<String> allNames;  //To store values of EditTexts (names)
+    String player = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_play);
-
-        //Toast message shows up empty: probably need to change the following, also on SetupGameActivity.java
+        allNames = new ArrayList<>();
         allNames = getIntent().getStringArrayListExtra("all");
+
+        // To test that the ArrayList successfully transferred over with the Intent:
         for (int i = 0; i < allNames.size(); i++) {
-            Toast.makeText(GamePlayActivity.this, allNames.get(i), Toast.LENGTH_SHORT).show();
+            player = allNames.get(i);
+            Toast.makeText(GamePlayActivity.this, "Player " + (i + 1) + ": " + player, Toast.LENGTH_SHORT).show();
         }
     }
 
