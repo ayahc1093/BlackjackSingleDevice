@@ -1,7 +1,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <string name="app_name">BlackjackSingleDevice</string>
 
-    <string name="welcome_message">Hi there! \nWelcome to \nTTI\'s BlackJack Table!</string>
+    <string name="welcome_message">Hi there! \nWelcome to TTI\'s BlackJack Table!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_setup_game">SetupGameActivity</string>
     <string name="title_activity_game_play">GamePlayActivity</string>

@@ -1,17 +1,29 @@
 package com.example.student.blackjacksingledevice;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+import java.util.ArrayList;
 
+public class GamePlayActivity extends Activity {
 
-public class GamePlayActivity extends ActionBarActivity {
+    ArrayList<String> allNames;  //To store values of EditTexts (names)
+    String player = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_play);
+        allNames = new ArrayList<>();
+        allNames = getIntent().getStringArrayListExtra("all");
+
+        // To test that the ArrayList successfully transferred over with the Intent:
+        for (int i = 0; i < allNames.size(); i++) {
+            player = allNames.get(i);
+            Toast.makeText(GamePlayActivity.this, "Player " + (i + 1) + ": " + player, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
