@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
 public class GamePlayActivity extends Activity {
 
     //Store the deck of cards in an integer array so that it can be accessed easily
-    private static Integer[] cards = {R.drawable.card0, R.drawable.card1, R.drawable.card2, R.drawable.card3, R.drawable.card4, R.drawable.card5, R.drawable.card6,
+    Integer[] cards = {R.drawable.card0, R.drawable.card1, R.drawable.card2, R.drawable.card3, R.drawable.card4, R.drawable.card5, R.drawable.card6,
                 R.drawable.card7, R.drawable.card8, R.drawable.card9, R.drawable.card10, R.drawable.card11, R.drawable.card12, R.drawable.card13, R.drawable.card14,
                 R.drawable.card15, R.drawable.card16, R.drawable.card17, R.drawable.card18, R.drawable.card19, R.drawable.card20, R.drawable.card20, R.drawable.card21,
                 R.drawable.card22, R.drawable.card23, R.drawable.card24, R.drawable.card25, R.drawable.card26, R.drawable.card27, R.drawable.card28, R.drawable.card29,
@@ -28,10 +29,11 @@ public class GamePlayActivity extends Activity {
 
     ArrayList<String> allNames;  //To store values of EditTexts (names)
     String player = "";
-    static GridView myLayout;
+    GridView myLayout; //changed from static
     Gallery playersGallery;
     List<Gallery> allGalleries;
     ImageView image;
+    RelativeLayout playRelLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,19 +50,29 @@ public class GamePlayActivity extends Activity {
             Toast.makeText(GamePlayActivity.this, "Player " + (i + 1) + ": " + player, Toast.LENGTH_SHORT).show();
         }
 
-        myLayout = (GridView) findViewById(R.id.gridView1);
-        myLayout.setAdapter(new ImageAdapter(this));
+        //myLayout = (GridView) findViewById(R.id.gridView1);
+        //myLayout.setAdapter(new ImageAdapter(this));
 
+        playRelLayout = (RelativeLayout)findViewById(R.id.playRelLayout);
         //dynamically create a gallery for each player to hold their cards
-        for (int i = 0; i < allNames.size(); i++) {
-            playersGallery = new Gallery(GamePlayActivity.this);
+        for (int i = 0; i < allNames.size(); i++) { //will need to find way to account for dealer
+            myLayout = new GridView(GamePlayActivity.this);
+            myLayout.setId(i);
+            myLayout.setPadding(5, 5, 5, 5);
+            myLayout.setHorizontalSpacing(5);
+            myLayout.setVerticalSpacing(5);
+            myLayout.setAdapter(new ImageAdapter(this));
+            playRelLayout.addView(myLayout);
+
+            /*playersGallery = new Gallery(GamePlayActivity.this);
             playersGallery.setId(i); //the allNames.get(i) method did not work here so the id is set to the array
-            myLayout.addView(playersGallery);
+            playersGallery.setAdapter(new ImageAdapter(this));
+            myLayout.addView(playersGallery); */
         }
-        image = new ImageView(this); //instantiated here
+
     }
 
-    public static void startGame(ArrayList<String> playerNames) {
+    /*public static void startGame(ArrayList<String> playerNames) {
         boolean[] deck = new boolean[52];
         int amountOfPlayers = playerNames.size();
 
@@ -107,12 +119,12 @@ public class GamePlayActivity extends Activity {
 
 
 
-                    image.setImageResource(cards[playersHand[i][j]]);
-                    myLayout.addView(image);
+                    *//*image.setImageResource(cards[playersHand[i][j]]);
+                    myLayout.addView(image);*//*
 
                 }
             }
-        }
+        }*/
     public class ImageAdapter extends BaseAdapter {
 
         Context context;
@@ -127,20 +139,26 @@ public class GamePlayActivity extends Activity {
 
         public Object getItem(int position) {
 
-            return cards[position];
+            return position;
         }
 
         public long getItemId(int position) {
 
-            return 0;
+            return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView = new ImageView(context);
-            imageView.setImageResource(cards[position]);
-            imageView.setLayoutParams(new Gallery.LayoutParams(100, 100));
-            //imageView.setBackgroundResource(itemBackground);
+            ImageView imageView;
+            if (convertView == null) {
+                imageView = new ImageView(context);
+                imageView.setImageResource(cards[position]);
+                imageView.setScaleType(ImageView.ScaleType.CENTER);
+                imageView.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, GridView.AUTO_FIT));
+                imageView.setPadding(5, 5, 5, 5);
+            } else {
+                imageView = (ImageView)convertView;
+            }
             return imageView;
         }
 
