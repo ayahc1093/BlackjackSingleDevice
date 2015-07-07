@@ -9,12 +9,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 
 public class OpeningActivity extends Activity {
 
-    private String[] numPlayers = {"1", "2", "3", "4", "5", "6"};
+    private String[] numPlayers = {"1", "2", "3", "4", "5"};
 
     String splode = "";
     Intent intent;
