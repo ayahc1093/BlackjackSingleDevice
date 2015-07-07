@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GamePlayActivity extends Activity {
 
@@ -29,7 +30,8 @@ public class GamePlayActivity extends Activity {
     String player = "";
     static GridView myLayout;
     Gallery playersGallery;
-
+    List<Gallery> allGalleries;
+    ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class GamePlayActivity extends Activity {
             playersGallery.setId(i); //the allNames.get(i) method did not work here so the id is set to the array
             myLayout.addView(playersGallery);
         }
+        image = new ImageView(this); //instantiated here
     }
 
     public static void startGame(ArrayList<String> playerNames) {
@@ -97,12 +100,12 @@ public class GamePlayActivity extends Activity {
             }
 
         public static void printCards(int[][] playersHand, ArrayList<String> playersNames) {
-            Context context;
+
 
             for (int i = 0; i < playersHand.length; i++) {
                 for (int j = 0; j < playersHand[i].length && playersHand[i][j] != -1; j++) {
 
-                    ImageView image = new ImageView(GamePlayActivity.this);
+
 
                     image.setImageResource(cards[playersHand[i][j]]);
                     myLayout.addView(image);
@@ -110,27 +113,38 @@ public class GamePlayActivity extends Activity {
                 }
             }
         }
-    class ImageAdapter extends BaseAdapter {
+    public class ImageAdapter extends BaseAdapter {
 
-        private Context mContext;
+        Context context;
+
+        public ImageAdapter(Context c) {
+            context = c;
+        }
+
         public int getCount() {
-            return mThumbIds.length;
+            return cards.length;
         }
+
         public Object getItem(int position) {
-            return mThumbIds[position];
+
+            return cards[position];
         }
+
         public long getItemId(int position) {
+
             return 0;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return null;
+            ImageView imageView = new ImageView(context);
+            imageView.setImageResource(cards[position]);
+            imageView.setLayoutParams(new Gallery.LayoutParams(100, 100));
+            //imageView.setBackgroundResource(itemBackground);
+            return imageView;
         }
 
-        public ImageAdapter(Context c) {
-            mContext = c;
-        }
+
     }
 
 }
