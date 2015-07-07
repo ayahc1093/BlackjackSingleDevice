@@ -59,6 +59,7 @@ public class GamePlayActivity extends Activity {
             dynamicallyCreatedGridView.setHorizontalSpacing(5);
             dynamicallyCreatedGridView.setVerticalSpacing(5);
             dynamicallyCreatedGridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+            dynamicallyCreatedGridView.setAdapter(new ImageAdapter(GamePlayActivity.this));
             myLinearLayout.addView(dynamicallyCreatedGridView);
         }
 
