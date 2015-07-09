@@ -59,7 +59,7 @@ public class GamePlayActivity extends Activity {
         }
 
         GamePlayActivity game = new GamePlayActivity();
-        //game.startGame(allNames);
+        game.startGame(allNames);
     }
 
    /* public GamePlayActivity() {}
