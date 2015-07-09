@@ -58,7 +58,7 @@ public class GamePlayActivity extends Activity {
             grid.addView(playersGallery);
         }
 
-        //GamePlayActivity game = new GamePlayActivity();
+        GamePlayActivity game = new GamePlayActivity();
         //game.startGame(allNames);
     }
 
