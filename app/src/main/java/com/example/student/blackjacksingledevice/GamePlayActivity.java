@@ -11,11 +11,9 @@ import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GamePlayActivity extends Activity {
 
@@ -31,7 +29,8 @@ public class GamePlayActivity extends Activity {
     ArrayList<String> allNames;  //To store values of EditTexts (names)
     String player = "";
     LinearLayout myLinearLayout;
-    GridView dynamicallyCreatedGridView; //"kishmo kain hu"
+    GridView grid; //"kishmo kain hu"
+    Gallery playersGallery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +48,22 @@ public class GamePlayActivity extends Activity {
         }
 
         myLinearLayout = (LinearLayout)findViewById(R.id.myLinearLayout);
-
+        grid = (GridView) findViewById(R.id.gridView1);
         //dynamically create GridViews with amount corresponding with # of players:
         for (int i = 0; i < allNames.size(); i++) {
-            dynamicallyCreatedGridView = new GridView(GamePlayActivity.this);
-            dynamicallyCreatedGridView.setId(i);
-            dynamicallyCreatedGridView.setNumColumns(GridView.AUTO_FIT);
-            dynamicallyCreatedGridView.setPadding(5, 5, 5, 5);
-            dynamicallyCreatedGridView.setHorizontalSpacing(5);
-            dynamicallyCreatedGridView.setVerticalSpacing(5);
-            dynamicallyCreatedGridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-            dynamicallyCreatedGridView.setAdapter(new ImageAdapter(GamePlayActivity.this));
-            myLinearLayout.addView(dynamicallyCreatedGridView);
+            playersGallery = new Gallery(GamePlayActivity.this);
+            playersGallery.setId(i); //the allNames.get(i) method did not work here so the id is set to the array
+            playersGallery.setPadding(5, 5, 5, 5);
+           // playersGallery.setAdapter(new ImageAdapter(this));
+            grid.addView(playersGallery);
         }
 
-
-
+        //GamePlayActivity game = new GamePlayActivity();
+        //game.startGame(allNames);
     }
 
-    public GamePlayActivity() {}
-    /*public static void startGame(ArrayList<String> playerNames) {
+   /* public GamePlayActivity() {}
+    public void startGame(ArrayList<String> playerNames) {
         boolean[] deck = new boolean[52];
         int amountOfPlayers = playerNames.size();
 
@@ -95,7 +90,7 @@ public class GamePlayActivity extends Activity {
     }
 
     //deals 2 cards to all the players and flips the value of the card to true in the deck array and makes sure that one card is not dealt twice
-    public static void dealCards(boolean[] deck, int[] playerhand) {
+    public void dealCards(boolean[] deck, int[] playerhand) {
         int count = 0;
                 while(count < 2) {
                     int deal = (int)(Math.random() * 52);
@@ -107,20 +102,18 @@ public class GamePlayActivity extends Activity {
                 }
             }
 
-        public static void printCards(int[][] playersHand, ArrayList<String> playersNames) {
+        public void printCards(int[][] playersHand, ArrayList<String> playersNames) {
 
 
             for (int i = 0; i < playersHand.length; i++) {
                 for (int j = 0; j < playersHand[i].length && playersHand[i][j] != -1; j++) {
+                    ImageView imageView = new ImageView(this);
+                    imageView.setImageResource(R.drawable.card0);
 
-
-
-                    *//*image.setImageResource(cards[playersHand[i][j]]);
-                    myLayout.addView(image);*//*
 
                 }
             }
-        }*/
+        }**/
     public class ImageAdapter extends BaseAdapter {
 
         Context context;
@@ -174,15 +167,15 @@ public class GamePlayActivity extends Activity {
     myLinearLayout = (LinearLayout)findViewById(R.id.myLinearLayout);
         //dynamically create a gallery for each player to hold their cards
         for (int i = 0; i < allNames.size(); i++) { //will need to find way to account for dealer
-            dynamicallyCreatedGridView = new GridView(GamePlayActivity.this);
-            dynamicallyCreatedGridView.setId(i);
-            dynamicallyCreatedGridView.setNumColumns(GridView.AUTO_FIT);
-            //dynamicallyCreatedGridView.setPadding(5, 5, 5, 5);
-            dynamicallyCreatedGridView.setHorizontalSpacing(5);
-            dynamicallyCreatedGridView.setVerticalSpacing(5);
-            dynamicallyCreatedGridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-            dynamicallyCreatedGridView.setAdapter(new ImageAdapter(this));
-            myLayout.addView(dynamicallyCreatedGridView);
+            grid = new GridView(GamePlayActivity.this);
+            grid.setId(i);
+            grid.setNumColumns(GridView.AUTO_FIT);
+            //grid.setPadding(5, 5, 5, 5);
+            grid.setHorizontalSpacing(5);
+            grid.setVerticalSpacing(5);
+            grid.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+            grid.setAdapter(new ImageAdapter(this));
+            myLayout.addView(grid);
 
             *//*playersGallery = new Gallery(GamePlayActivity.this);
             playersGallery.setId(i); //the allNames.get(i) method did not work here so the id is set to the array
