@@ -3,7 +3,6 @@ package com.example.student.blackjacksingledevice;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +12,7 @@ import android.os.Bundle;
  */
 public class HitOrStickDialogBox extends DialogFragment {
 
-    Intent intent =  new Intent(HitOrStickDialogBox.this);
-    boolean isHit;
+    Intent intent;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -26,8 +24,7 @@ public class HitOrStickDialogBox extends DialogFragment {
     DialogInterface.OnClickListener pListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface arg0, int arg1) {
-            isHit = true;
-            intent.putExtra("Player choice", isHit);
+            intent.putExtra("Player choice", true);
             HitOrStickDialogBox.this.startActivity(intent);
         }
     };
@@ -35,8 +32,7 @@ public class HitOrStickDialogBox extends DialogFragment {
     DialogInterface.OnClickListener nListener = new DialogInterface.OnClickListener() {
         @Override
          public void onClick(DialogInterface arg0, int arg1) {
-            isHit = false;
-            intent.putExtra("Player choice", isHit);
+            intent.putExtra("Player choice", false);
             HitOrStickDialogBox.this.startActivity(intent);
 
         }
