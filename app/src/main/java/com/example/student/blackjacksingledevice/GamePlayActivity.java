@@ -1,39 +1,32 @@
 package com.example.student.blackjacksingledevice;
 
 import android.app.Activity;
-import android.content.Context;
-import android.media.Image;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Gallery;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
 public class GamePlayActivity extends Activity {
 
-  /*  //Store the deck of cards in an integer array so that it can be accessed easily
-    Integer[] cards = {R.drawable.card0, R.drawable.card1, R.drawable.card2, R.drawable.card3, R.drawable.card4, R.drawable.card5, R.drawable.card6,
-                R.drawable.card7, R.drawable.card8, R.drawable.card9, R.drawable.card10, R.drawable.card11, R.drawable.card12, R.drawable.card13, R.drawable.card14,
-                R.drawable.card15, R.drawable.card16, R.drawable.card17, R.drawable.card18, R.drawable.card19, R.drawable.card20, R.drawable.card20, R.drawable.card21,
-                R.drawable.card22, R.drawable.card23, R.drawable.card24, R.drawable.card25, R.drawable.card26, R.drawable.card27, R.drawable.card28, R.drawable.card29,
-                R.drawable.card30, R.drawable.card31, R.drawable.card32, R.drawable.card33, R.drawable.card34, R.drawable.card35, R.drawable.card36, R.drawable.card37,
-                R.drawable.card38, R.drawable.card39, R.drawable.card40, R.drawable.card41, R.drawable.card42, R.drawable.card43, R.drawable.card44, R.drawable.card45,
-                R.drawable.card46, R.drawable.card47, R.drawable.card48, R.drawable.card49, R.drawable.card50, R.drawable.card51, R.drawable.card52};*/
+    //Store the deck of cards in an integer array so that it can be accessed easily
+    /*Integer[] cards = {R.drawable.card0, R.drawable.card1, R.drawable.card2, R.drawable.card3, R.drawable.card4, R.drawable.card5, R.drawable.card6,
+            R.drawable.card7, R.drawable.card8, R.drawable.card9, R.drawable.card10, R.drawable.card11, R.drawable.card12, R.drawable.card13, R.drawable.card14,
+            R.drawable.card15, R.drawable.card16, R.drawable.card17, R.drawable.card18, R.drawable.card19, R.drawable.card20, R.drawable.card20, R.drawable.card21,
+            R.drawable.card22, R.drawable.card23, R.drawable.card24, R.drawable.card25, R.drawable.card26, R.drawable.card27, R.drawable.card28, R.drawable.card29,
+            R.drawable.card30, R.drawable.card31, R.drawable.card32, R.drawable.card33, R.drawable.card34, R.drawable.card35, R.drawable.card36, R.drawable.card37,
+            R.drawable.card38, R.drawable.card39, R.drawable.card40, R.drawable.card41, R.drawable.card42, R.drawable.card43, R.drawable.card44, R.drawable.card45,
+            R.drawable.card46, R.drawable.card47, R.drawable.card48, R.drawable.card49, R.drawable.card50, R.drawable.card51, R.drawable.card52}; **/
 
     ArrayList<String> allNames;  //To store values of EditTexts (names)
     String player = "";
     LinearLayout myLinearLayout;
-    TextView textView;
-    //GridView dynamicallyCreatedGridView; //"kishmo kain hu"
+    //GridView grid; //"kishmo kain hu"
+    //Gallery playersGallery;
+    private static GamePlayActivity game = new GamePlayActivity();
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +44,28 @@ public class GamePlayActivity extends Activity {
         }
 
         myLinearLayout = (LinearLayout) findViewById(R.id.myLinearLayout);
+        //grid = (GridView) findViewById(R.id.gridView1);
+        //dynamically create Galleries with amount corresponding with # of players:
+        /*for (int i = 0; i < allNames.size(); i++) {
+            playersGallery = new Gallery(GamePlayActivity.this);
+            playersGallery.setId(i); //the allNames.get(i) method did not work here so the id is set to the array
+            playersGallery.setPadding(5, 5, 5, 5);
+            // playersGallery.setAdapter(new ImageAdapter(this));
+            grid.addView(playersGallery);
+        }**/
 
-        GamePlayActivity game = new GamePlayActivity();
+
         game.startGame(allNames);
-
-
+        //grid.addView(myLinearLayout);
     }
+
 
     public GamePlayActivity() {
     }
 
-    public  void startGame(ArrayList<String> playerNames) {
+
+
+    public void startGame(ArrayList<String> playerNames) {
         boolean[] deck = new boolean[52];
         int amountOfPlayers = playerNames.size();
 
@@ -77,18 +81,22 @@ public class GamePlayActivity extends Activity {
             dealCards(deck, players[i]);
         }
 
-        printCards(players, playerNames);
+        for (int i = 0; i < players.length - 1; i++) {
+            //System.out.println("It is " + playerNames[i] + "'s turn.");
+            playersTurn(i, players, deck, playerNames);
+        }
+        dealersTurn(players, deck, playerNames);
     }
 
     //populates the available card spaces to with a value of -1
-    public  void populateDeck(int[] playerDeck) {
+    public static void populateDeck(int[] playerDeck) {
         for (int i = 0; i < playerDeck.length; i++) {
             playerDeck[i] = -1;
         }
     }
 
     //deals 2 cards to all the players and flips the value of the card to true in the deck array and makes sure that one card is not dealt twice
-    public  void dealCards(boolean[] deck, int[] playerhand) {
+    public void dealCards(boolean[] deck, int[] playerhand) {
         int count = 0;
         while (count < 2) {
             int deal = (int) (Math.random() * 52);
@@ -100,103 +108,242 @@ public class GamePlayActivity extends Activity {
         }
     }
 
-    public  void printCards(int[][] playersHand, ArrayList<String> playersNames) {
+    public void printCards(int[][] playersHand, ArrayList<String> playersNames) {
 
 
-        for (int i = 0; i < playersHand.length; i++) {
-            for (int j = 0; j < playersHand[i].length && playersHand[i][j] != -1; j++) {
+        for (int i = 0; i < playersNames.size(); i++) {
+            String player = playersNames.get(i);
+            TextView playersCards = new TextView(GamePlayActivity.this);
+            playersCards.setText(player);
+            myLinearLayout.addView(playersCards);
 
-                for (int player = 0; player < playersNames.size(); player++) {
-                    textView = new TextView(this);
-                    textView.setText(playersNames.get(player) + "'s cards are: ");
-                    //System.out.println(playersNames.get(player) + "'s cards are: ");
-                    for (int card = 0; card < playersHands[0].length && playersHands[player][card] != -1; card++) {
+            for (int j = 0; j < playersHand[0].length && playersHand[1][j] != -1; j++) {
+                String cardFaceValue = getCardFaceValueText(playersHand, 1, j);
+                TextView card = new TextView(GamePlayActivity.this);
+                card.setText(cardFaceValue);
+                myLinearLayout.addView(card);
+                //if(playersNames[player] == "Dealer" && currentPlayer != playersHand.length -1)
+                //break;
 
-                        String cardFaceValue = getCardFaceValueText(playersHands, player, card);
-                        System.out.println(cardFaceValue);
-                        if (playersNames[player] == "Dealer" && currentPlayer != playersHands.length - 1)
-                            break;
-                    }
-
-
-                    System.out.println();
-
-                /*image.setImageResource(cards[playersHand[i][j]]);
-                myLayout.addView(image);*/
-
-                }
             }
         }
     }
 
-
-    private static String getCardFaceValueText(int[][] playersHands,
-                                               int player, int card) {
+    //gets the number and the suit of each card using an algorithm
+    private static String getCardFaceValueText(int[][] playersHands, int player, int card) {
         int cardNumber;
         int suit;
-        String cardFaceValue = "";
+        String cardFaceValue="";
         cardNumber = (playersHands[player][card] % 13) + 1;
         switch (cardNumber) {
-            case 1:
-                cardFaceValue = "Ace of ";
-                break;
-            case 11:
-                cardFaceValue = "Jack of ";
-                break;
-            case 12:
-                cardFaceValue = "Queen of ";
-                break;
-            case 13:
-                cardFaceValue = "King of ";
-                break;
-            default:
-                cardFaceValue = cardNumber + " of ";
-                break;
+            case 1: cardFaceValue="Ace of "; break;
+            case 11: cardFaceValue="Jack of "; break;
+            case 12: cardFaceValue="Queen of "; break;
+            case 13: cardFaceValue="King of "; break;
+            default: cardFaceValue= cardNumber + " of "; break;
         }
         suit = playersHands[player][card] / 13;
-        switch (suit) {
-            case 0:
-                cardFaceValue += "Spades";
-                break;
-            case 1:
-                cardFaceValue += "Diamonds";
-                break;
-            case 2:
-                cardFaceValue += "Clubs";
-                break;
-            case 3:
-                cardFaceValue += "Hearts";
-                break;
-            default:
-                cardFaceValue += "Unknown suit";
-                break;
+        switch(suit) {
+            case 0: cardFaceValue+="Spades"; break;
+            case 1: cardFaceValue+="Diamonds"; break;
+            case 2: cardFaceValue+="Clubs"; break;
+            case 3: cardFaceValue+="Hearts"; break;
+            default: cardFaceValue+="Unknown suit"; break;
         }
         return cardFaceValue;
     }
+
+    public void playersTurn(int i, int[][] players,boolean[] deck, ArrayList<String> playersName) {
+        game.printCards(players, playersName);
+        //need to put this if statement in the startGame method
+        if(isBlackJack(players[i])){
+            Toast.makeText(GamePlayActivity.this, playersName.get(i) + " has BlackJack!! Your turn is over. You Won!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        promptUser(i, players, deck, playersName);
+
+    }
+
+    public static boolean isBlackJack(int[] playerHand){
+        boolean oneTenValueCard=false;
+        boolean oneAceCard=false;
+        for(int i = 0; i < 2; i++) {
+            if (playerHand[i]%13==0)
+                oneAceCard=true;
+            else if(playerHand[i]%13>=9)
+                oneTenValueCard=true;
+        }
+        if(oneAceCard && oneTenValueCard)
+            return true;//blackjack can only happen where there are 2 cards and not more.
+        return false;
+    }
+
+    public void promptUser(int currentPlayer, int[][] players, boolean[] deck, ArrayList<String> playersNames) {
+        boolean isHit;
+        do{
+            int sumOfCards = countCards(players[currentPlayer]);
+            if(sumOfCards >  21){
+                System.out.println(playersNames.get(currentPlayer)  + ", you Busted. Your turn is over; You lost ");
+                break;
+            }
+
+            intent = new Intent(this, HitOrStickDialogBox.class);
+            intent.putExtra("current player", playersNames.get(currentPlayer));
+            intent.putExtra("sum of cards", sumOfCards);
+            new HitOrStickDialogBox().show(getFragmentManager(), "My Fragment");
+
+            Bundle bundle = getIntent().getExtras();
+            isHit = bundle.getBoolean("Player choice");
+
+            if(isHit)
+            {
+                hit(deck,players[currentPlayer]);
+                System.out.println("You were dealt a " + getCardFaceValueText(players, currentPlayer, getPlayersFirstEmptyCardIndex(players[currentPlayer])-1));//need to add here if its a 10,11,12 that its king queen or jack
+            }
+            else
+                System.out.println(playersNames.get(currentPlayer) + ", Your turn is over");
+        } while(isHit);
+        // input.close();
+    }
+
+    public static int countCards(int[] cards) {
+        int sum = 0;
+        boolean aceFound=false;
+        int c = 0;  //changed to 0
+        for (int i = 0; i < cards.length && cards[i] != -1 ; i++ ) {//the loop doesn't need to go through the whole array
+            c = cards[i] % 13; //divide to get card number, but it's 1 off (lower because of 0 index)
+            if (c >= 0 && c < 9)
+                sum += c + 1;
+            if (c >= 9 && c <= 12)
+                sum += 10;
+            if (c == 0)
+                aceFound=true;
+        }
+        if (aceFound)
+            sum+= (isSumLessThanEleven(sum)?10:0);//After summing all cards, add ten if there are any aces with room to be high
+        return sum;
+    }
+
+    public static boolean isSumLessThanEleven(int sum) {
+        if (sum < 11)
+            return true;
+        else
+            return false;
+    }
+
+    public static int hit(boolean[] deck, int[] whosTurn) {
+        int x = (int)(Math.random() * 52);
+        while(deck[x] == true) {
+            x = (int)(Math.random() * 52);
+        }
+        deck[x] = true;
+        whosTurn[getPlayersFirstEmptyCardIndex(whosTurn)] = x;
+        return x;
+    }
+
+    private static int getPlayersFirstEmptyCardIndex(int[] whosTurn) {
+        int i;
+        for(i= 0; i < whosTurn.length; i++) {
+            if (whosTurn[i] == -1) {
+                break;
+            }
+        }
+        return i;
+    }
+
+    public void dealersTurn(int [][] players, boolean [] deck, ArrayList<String> playersNames){
+        int dSum = countCards(players[players.length - 1]);
+        boolean isHit;
+
+        System.out.println("It is the dealer's turn. \nThe dealers cards are:"); //added this to print dealers first 2 cards
+        for (int i = 0; i < 2; i++)
+            System.out.println(getCardFaceValueText(players, players.length -1, i));
+        //check for blackjack here!
+        do{
+            isHit = false;
+            if (dSum < 17){
+                hit(deck, players[players.length - 1]);
+                dSum = countCards(players[players.length - 1]);
+                System.out.println("To see what the dealer has dealt, press enter!");
+                Scanner input = new Scanner(System.in);
+                input.nextLine();
+                System.out.println("The dealer was dealt a "
+                        + getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
+                        + " count up to " + dSum);
+                isHit = true;
+            }else if(isThereOneAceHigh(players[players.length - 1], dSum) && dSum == 17){ // this is what the method is expecting... the isThereOneAce method is also expecting to be passed in something
+                hit(deck, players[players.length - 1]);
+                dSum = countCards(players[players.length - 1]);
+                System.out.println("To see what the dealer has dealt, press enter!");
+                Scanner input = new Scanner(System.in);
+                input.nextLine();
+                System.out.println("The dealer was dealt a "
+                        + getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
+                        + " count up to " + dSum);
+                isHit = true;
+            }else{   //stick
+                System.out.println("\nAll players cards will be displayed:");
+                printCards(players, playersNames);
+                if(dSum > 21){
+                    System.out.println("Dealer busted with a total of " + dSum );
+                    for(int i = 0; i < players.length - 1; i++){
+                        if(countCards(players[i]) <= 21)//checks if the player is not busted (used to be in the isPlayerNotBusted method)
+                            System.out.println(playersNames.get(i) + ": won!");
+                        else
+                            System.out.println(playersNames.get(i) + ": lost.");
+                    }
+                }else
+                    for(int i = 0; i < players.length - 1; i++){
+                        if(countCards(players[i]) <= 21){//checks if the player is not busted
+                            if(countCards(players[i]) > dSum)
+                                System.out.println(playersNames.get(i) + ": won!");
+                            else if(countCards(players[i]) == dSum)
+                                System.out.println(playersNames.get(i) + " and the Dealer -- PUSH, DRAW");
+                            else//player has less than dealerSum
+                                System.out.println(playersNames.get(i) + " lost.");
+                        }else
+                            System.out.println(playersNames.get(i) + " lost.");
+                    }
+            }
+        }while(isHit);
+    }
+
+    public static boolean isThereOneAceHigh(int [] dealer, int dealersSum){
+        int sum = 0;
+        boolean aceFound = false;
+        for (int i = 0; i < dealer.length && dealer[i] != -1 ; i++ ) {//the loop doesn't need to go through the whole array
+            int c = dealer[i] % 13; //divide to get card number, but it's 1 off (lower because of 0 index)
+            if (c >= 0 && c < 9)
+                sum += c + 1;
+            else if (c >= 9 && c <= 12)
+                sum += 10;
+            if (c == 0) {
+                aceFound=true;
+                if(isSumLessThanEleven(sum)) //this method used to be called aceIsHigh(int sum)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        return aceFound;
+    }
+
 }
 
-   /* public class ImageAdapter extends BaseAdapter {
-
+    /*public class ImageAdapter extends BaseAdapter {
         Context context;
-
         public ImageAdapter(Context c) {
             context = c;
         }
-
         public int getCount() {
             return cards.length;
         }
-
         public Object getItem(int position) {
-
             return position;
         }
-
         public long getItemId(int position) {
-
             return position;
         }
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView imageView;
@@ -212,7 +359,7 @@ public class GamePlayActivity extends Activity {
             return imageView;
         }
     }
-}*/
+}**/
 
 // Misc code that we are temporarily placing here in case we need it later:
 
@@ -228,32 +375,18 @@ public class GamePlayActivity extends Activity {
     myLinearLayout = (LinearLayout)findViewById(R.id.myLinearLayout);
         //dynamically create a gallery for each player to hold their cards
         for (int i = 0; i < allNames.size(); i++) { //will need to find way to account for dealer
-            dynamicallyCreatedGridView = new GridView(GamePlayActivity.this);
-            dynamicallyCreatedGridView.setId(i);
-            dynamicallyCreatedGridView.setNumColumns(GridView.AUTO_FIT);
-            //dynamicallyCreatedGridView.setPadding(5, 5, 5, 5);
-            dynamicallyCreatedGridView.setHorizontalSpacing(5);
-            dynamicallyCreatedGridView.setVerticalSpacing(5);
-            dynamicallyCreatedGridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-            dynamicallyCreatedGridView.setAdapter(new ImageAdapter(this));
-            myLayout.addView(dynamicallyCreatedGridView);
-
+            grid = new GridView(GamePlayActivity.this);
+            grid.setId(i);
+            grid.setNumColumns(GridView.AUTO_FIT);
+            //grid.setPadding(5, 5, 5, 5);
+            grid.setHorizontalSpacing(5);
+            grid.setVerticalSpacing(5);
+            grid.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+            grid.setAdapter(new ImageAdapter(this));
+            myLayout.addView(grid);
             *//*playersGallery = new Gallery(GamePlayActivity.this);
             playersGallery.setId(i); //the allNames.get(i) method did not work here so the id is set to the array
             playersGallery.setAdapter(new ImageAdapter(this));
             myLayout.addView(playersGallery); *//*
         }
 */
-
-//dynamically create GridViews with amount corresponding with # of players:
-        /*for (int i = 0; i < allNames.size(); i++) {
-            dynamicallyCreatedGridView = new GridView(GamePlayActivity.this);
-            dynamicallyCreatedGridView.setId(i);
-            dynamicallyCreatedGridView.setNumColumns(GridView.AUTO_FIT);
-            dynamicallyCreatedGridView.setPadding(5, 5, 5, 5);
-            dynamicallyCreatedGridView.setHorizontalSpacing(5);
-            dynamicallyCreatedGridView.setVerticalSpacing(5);
-            dynamicallyCreatedGridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-            dynamicallyCreatedGridView.setAdapter(new ImageAdapter(GamePlayActivity.this));
-            myLinearLayout.addView(dynamicallyCreatedGridView);
-        }*/
