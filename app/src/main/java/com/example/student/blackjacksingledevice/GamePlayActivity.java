@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class GamePlayActivity extends Activity {
 
+    //it works!!
 
     ArrayList<String> allNames;  //To store values of EditTexts (names)
     String player = "";
