@@ -17,7 +17,7 @@ public class GamePlayActivity extends Activity {
     String player = "";
     LinearLayout myLinearLayout;
 
-    private static GamePlayActivity game = new GamePlayActivity();
+    private GamePlayActivity game = new GamePlayActivity();
     Intent intent;
 
     @Override
@@ -27,7 +27,7 @@ public class GamePlayActivity extends Activity {
         allNames = new ArrayList<>();
         allNames = getIntent().getStringArrayListExtra("all");
         //Add the dealer to the end of the array list of players
-        allNames.add("dealer");
+       //allNames.add("dealer");
 
         // To test that the ArrayList successfully transferred over with the Intent:
         for (int i = 0; i < allNames.size(); i++) {
@@ -35,14 +35,14 @@ public class GamePlayActivity extends Activity {
             Toast.makeText(GamePlayActivity.this, "Player " + (i + 1) + ": " + player, Toast.LENGTH_SHORT).show();
         }
 
-        myLinearLayout = (LinearLayout) findViewById(R.id.myLinearLayout);
+       /* myLinearLayout = (LinearLayout) findViewById(R.id.myLinearLayout);
 
 
         game.startGame(allNames);
-        //grid.addView(myLinearLayout);
+        //grid.addView(myLinearLayout);*/
     }
 
-
+/*
     public GamePlayActivity() {
     }
 
@@ -57,18 +57,18 @@ public class GamePlayActivity extends Activity {
 
         //populate all the players with a value of -1
         for (int i = 0; i < players.length; i++)
-            populateDeck(players[i]);
+            game.populateDeck(players[i]);
 
         //deal 2 cards to each player
         for (int i = 0; i < players.length; i++) {
-            dealCards(deck, players[i]);
+            game.dealCards(deck, players[i]);
         }
 
         for (int i = 0; i < players.length - 1; i++) {
             //System.out.println("It is " + playerNames[i] + "'s turn.");
-            playersTurn(i, players, deck, playerNames);
+            game.playersTurn(i, players, deck, playerNames);
         }
-        dealersTurn(players, deck, playerNames);
+        game.dealersTurn(players, deck, playerNames);
     }
 
     //populates the available card spaces to with a value of -1
@@ -260,9 +260,9 @@ public class GamePlayActivity extends Activity {
                 Toast.makeText(GamePlayActivity.this, "The dealer was dealt a "
                         + getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
                         + " count up to " + dSum, Toast.LENGTH_LONG).show();
-                /*System.out.println("The dealer was dealt a "
+                *//*System.out.println("The dealer was dealt a "
                         + getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
-                        + " count up to " + dSum);*/
+                        + " count up to " + dSum);*//*
                 isHit = true;
             }else if(isThereOneAceHigh(players[players.length - 1], dSum) && dSum == 17){ // this is what the method is expecting... the isThereOneAce method is also expecting to be passed in something
                 hit(deck, players[players.length - 1]);
@@ -274,9 +274,9 @@ public class GamePlayActivity extends Activity {
                 Toast.makeText(GamePlayActivity.this, "The dealer was dealt a "
                         + getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
                         + " count up to " + dSum, Toast.LENGTH_LONG).show();
-                /*System.out.println("The dealer was dealt a "
+                *//*System.out.println("The dealer was dealt a "
                         + getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
-                        + " count up to " + dSum);*/
+                        + " count up to " + dSum);*//*
                 isHit = true;
             }else{   //stick
                 Toast.makeText(GamePlayActivity.this, "\nAll players cards will be displayed:", Toast.LENGTH_LONG).show();
@@ -331,7 +331,7 @@ public class GamePlayActivity extends Activity {
             }
         }
         return aceFound;
-    }
+    }*/
 
 }
 

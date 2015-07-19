@@ -16,9 +16,9 @@ public class HitOrStickDialogBox extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder alerDialogBuilder = new AlertDialog.Builder(getActivity()).setTitle("Your Turn").setMessage("Would you like to hit or stick?")
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity()).setTitle("Your Turn").setMessage("Would you like to hit or stick?")
                 .setPositiveButton("Hit", pListener).setNegativeButton("Stick", nListener);
-        return alerDialogBuilder.create();
+        return alertDialogBuilder.create();
     }
 
     DialogInterface.OnClickListener pListener = new DialogInterface.OnClickListener() {
