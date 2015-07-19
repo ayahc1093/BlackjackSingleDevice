@@ -36,7 +36,7 @@ public class GamePlayActivity extends Activity {
 
         myLinearLayout = (LinearLayout) findViewById(R.id.myLinearLayout);
 
-
+        //Working now till here
         //game.startGame(allNames);
         //grid.addView(myLinearLayout);
     }
