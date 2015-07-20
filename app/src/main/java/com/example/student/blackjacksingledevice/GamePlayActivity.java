@@ -1,23 +1,25 @@
 package com.example.student.blackjacksingledevice;
 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class GamePlayActivity extends Activity {
 
+    //it works!!
 
     ArrayList<String> allNames;  //To store values of EditTexts (names)
     String player = "";
     LinearLayout myLinearLayout;
 
-    //private static GamePlayActivity game = new GamePlayActivity();
-    //Intent intent;
+    //Create a game object outside the onCreate method to be able to access it in the other methods
+    private static GamePlayActivity game = new GamePlayActivity();
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +38,16 @@ public class GamePlayActivity extends Activity {
 
         myLinearLayout = (LinearLayout) findViewById(R.id.myLinearLayout);
 
-
-        //game.startGame(allNames);
+        game.startGame(allNames);
         //grid.addView(myLinearLayout);
     }
-}
 
 
-    //public GamePlayActivity() {
-    //}
+    public GamePlayActivity() {
+    }
 
 
-
-    /*public void startGame(ArrayList<String> playerNames) {
+    public void startGame(ArrayList<String> playerNames) {
         boolean[] deck = new boolean[52];
         int amountOfPlayers = playerNames.size();
 
@@ -91,15 +90,13 @@ public class GamePlayActivity extends Activity {
         }
     }
 
-    public void printCards(int[][] playersHand, ArrayList<String> playersNames) {
 
-
+    /*public void printCards(int[][] playersHand, ArrayList<String> playersNames) {
         for (int i = 0; i < playersNames.size(); i++) {
             String player = playersNames.get(i);
             TextView playersCards = new TextView(GamePlayActivity.this);
             playersCards.setText(player);
             myLinearLayout.addView(playersCards);
-
             for (int j = 0; j < playersHand[0].length && playersHand[1][j] != -1; j++) {
                 String cardFaceValue = getCardFaceValueText(playersHand, 1, j);
                 TextView card = new TextView(GamePlayActivity.this);
@@ -107,10 +104,9 @@ public class GamePlayActivity extends Activity {
                 myLinearLayout.addView(card);
                 //if(playersNames[player] == "Dealer" && currentPlayer != playersHand.length -1)
                 //break;
-
             }
         }
-    }
+    }**/
 
     //gets the number and the suit of each card using an algorithm
     private static String getCardFaceValueText(int[][] playersHands, int player, int card) {
@@ -137,13 +133,12 @@ public class GamePlayActivity extends Activity {
     }
 
     public void playersTurn(int i, int[][] players,boolean[] deck, ArrayList<String> playersName) {
-        game.printCards(players, playersName);
-        //need to put this if statement in the startGame method
+        //game.printCards(players, playersName);
         if(isBlackJack(players[i])){
-            Toast.makeText(GamePlayActivity.this, playersName.get(i) + " has BlackJack!! Your turn is over. You Won!", Toast.LENGTH_LONG).show();
+            //Toast.makeText(GamePlayActivity.this, playersName.get(i) + " has BlackJack!! Your turn is over. You Won!", Toast.LENGTH_LONG).show();
             return;
         }
-        promptUser(i, players, deck, playersName);
+        game.promptUser(i, players, deck, playersName);
 
     }
 
@@ -161,55 +156,75 @@ public class GamePlayActivity extends Activity {
         return false;
     }
 
-    public void promptUser(int currentPlayer, int[][] players, boolean[] deck, ArrayList<String> playersNames) {
-        boolean isHit;
-        do{
+    //will use this method instead of the original prompt user method until we can get the dialog box and the toast messages to work
+    public void promptUser(int currentPlayer, int[][] players,boolean[] deck, ArrayList<String> playersNames) {
+
+        boolean isHit = true;
+
+        do {
             int sumOfCards = countCards(players[currentPlayer]);
-            if(sumOfCards >  21){
-                Toast.makeText(GamePlayActivity.this, playersNames.get(currentPlayer)  + ", you Busted. Your turn is over; You lost ", Toast.LENGTH_LONG).show();
-                //System.out.println(playersNames.get(currentPlayer)  + ", you Busted. Your turn is over; You lost ");
+            if (sumOfCards > 21) {
+                //Toast.makeText(GamePlayActivity.this, "This toast message works", Toast.LENGTH_LONG).show();
                 break;
             }
 
-            intent = new Intent(this, HitOrStickDialogBox.class);
+            if (isHit) {
+                hit(deck, players[currentPlayer]);
+            }
+            isHit = false;
+        } while (isHit);
+    }
+  /*public void promptUser(int currentPlayer, int[][] players, boolean[] deck, ArrayList<String> playersNames) {
+      //boolean isHit = true;
+      //do{
+        int sumOfCards = 25;//countCards(players[currentPlayer]);
+        if (sumOfCards > 21) {
+            Toast.makeText(GamePlayActivity.this, "It seems like it is working", Toast.LENGTH_LONG).show();
+          //Toast.makeText(GamePlayActivity.this, playersNames.get(currentPlayer) + ", you Busted. Your turn is over; You lost ", Toast.LENGTH_LONG).show();
+          //System.out.println(playersNames.get(currentPlayer)  + ", you Busted. Your turn is over; You lost ");
+          //break;
+          }
+            /*intent = new Intent(this, HitOrStickDialogBox.class);
             intent.putExtra("current player", playersNames.get(currentPlayer));
             intent.putExtra("sum of cards", sumOfCards);
             new HitOrStickDialogBox().show(getFragmentManager(), "My Fragment");
-
             Bundle bundle = getIntent().getExtras();
-            isHit = bundle.getBoolean("Player choice");
+            isHit = bundle.getBoolean("Player choice");**/
 
-            if(isHit)
-            {
-                hit(deck, players[currentPlayer]);
-                Toast.makeText(GamePlayActivity.this, "You were dealt a " + getCardFaceValueText(players, currentPlayer, getPlayersFirstEmptyCardIndex(players[currentPlayer])-1),
-                        Toast.LENGTH_SHORT).show();
+            /*if(isHit)  {
+                Toast.makeText(GamePlayActivity.this, "The activity is working", Toast.LENGTH_LONG).show();
+                //hit(deck, players[currentPlayer]);
+                //Toast.makeText(GamePlayActivity.this, "You were dealt a " + getCardFaceValueText(players, currentPlayer, getPlayersFirstEmptyCardIndex(players[currentPlayer])-1),
+                        //Toast.LENGTH_SHORT).show();
                 //System.out.println("You were dealt a " + getCardFaceValueText(players, currentPlayer, getPlayersFirstEmptyCardIndex(players[currentPlayer])-1));//need to add here if its a 10,11,12 that its king queen or jack
             }
             else
-                Toast.makeText(GamePlayActivity.this, playersNames.get(currentPlayer) + ", Your turn is over", Toast.LENGTH_LONG).show();
-                //System.out.println(playersNames.get(currentPlayer) + ", Your turn is over");
-        } while(isHit);
-        // input.close();
-    }
+                Toast.makeText(GamePlayActivity.this, "The activity is really working", Toast.LENGTH_LONG).show();
+                //Toast.makeText(GamePlayActivity.this, playersNames.get(currentPlayer) + ", Your turn is over", Toast.LENGTH_LONG).show();
+                //System.out.println(playersNames.get(currentPlayer) + ", Your turn is over");**/
+
+        /*} while(isHit);
+          // input.close();
+      }**/
 
     public static int countCards(int[] cards) {
         int sum = 0;
-        boolean aceFound=false;
+        boolean aceFound = false;
         int c = 0;  //changed to 0
-        for (int i = 0; i < cards.length && cards[i] != -1 ; i++ ) {//the loop doesn't need to go through the whole array
+        for (int i = 0; i < cards.length && cards[i] != -1; i++) {//the loop doesn't need to go through the whole array
             c = cards[i] % 13; //divide to get card number, but it's 1 off (lower because of 0 index)
             if (c >= 0 && c < 9)
                 sum += c + 1;
             if (c >= 9 && c <= 12)
                 sum += 10;
             if (c == 0)
-                aceFound=true;
+                aceFound = true;
         }
         if (aceFound)
             sum+= (isSumLessThanEleven(sum)?10:0);//After summing all cards, add ten if there are any aces with room to be high
         return sum;
     }
+
 
     public static boolean isSumLessThanEleven(int sum) {
         if (sum < 11)
@@ -243,71 +258,74 @@ public class GamePlayActivity extends Activity {
         boolean isHit;
 
         //System.out.println("It is the dealer's turn. \nThe dealers cards are:"); //added this to print dealers first 2 cards
-        Toast.makeText(GamePlayActivity.this, "It is the dealer's turn. \nThe dealers cards are: ", Toast.LENGTH_LONG).show();
-        for (int i = 0; i < 2; i++)
-            Toast.makeText(GamePlayActivity.this, getCardFaceValueText(players, players.length -1, i), Toast.LENGTH_LONG).show();
-            // System.out.println(getCardFaceValueText(players, players.length -1, i));
+        //Toast.makeText(GamePlayActivity.this, "It is the dealer's turn. \nThe dealers cards are: ", Toast.LENGTH_LONG).show();
+        //for (int i = 0; i < 2; i++)
+        //Toast.makeText(GamePlayActivity.this, getCardFaceValueText(players, players.length -1, i), Toast.LENGTH_LONG).show();
+        // System.out.println(getCardFaceValueText(players, players.length -1, i));
         //check for blackjack here!
         do{
             isHit = false;
             if (dSum < 17){
                 hit(deck, players[players.length - 1]);
                 dSum = countCards(players[players.length - 1]);
-                Toast.makeText(GamePlayActivity.this, "To see what the dealer has dealt, press enter!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(GamePlayActivity.this, "To see what the dealer has dealt, press enter!", Toast.LENGTH_LONG).show();
                 //System.out.println("To see what the dealer has dealt, press enter!");
-                Scanner input = new Scanner(System.in);
-                input.nextLine();
-                Toast.makeText(GamePlayActivity.this, "The dealer was dealt a "
-                        + getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
-                        + " count up to " + dSum, Toast.LENGTH_LONG).show();
-                /*System.out.println("The dealer was dealt a "
-                        + getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
-                        + " count up to " + dSum);
-                //isHit = true;
+                //Scanner input = new Scanner(System.in);
+                //input.nextLine();
+                //Toast.makeText(GamePlayActivity.this, "The dealer was dealt a "
+                //+ getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
+                //+ " count up to " + dSum, Toast.LENGTH_LONG).show();
+                //System.out.println("The dealer was dealt a "
+                //+ getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
+                //+ " count up to " + dSum);
+                isHit = true;
             }else if(isThereOneAceHigh(players[players.length - 1], dSum) && dSum == 17){ // this is what the method is expecting... the isThereOneAce method is also expecting to be passed in something
                 hit(deck, players[players.length - 1]);
                 dSum = countCards(players[players.length - 1]);
-                Toast.makeText(GamePlayActivity.this, "To see what the dealer has dealt, press enter!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(GamePlayActivity.this, "To see what the dealer has dealt, press enter!", Toast.LENGTH_LONG).show();
                 //System.out.println("To see what the dealer has dealt, press enter!");
-                Scanner input = new Scanner(System.in);
-                input.nextLine();
-                Toast.makeText(GamePlayActivity.this, "The dealer was dealt a "
-                        + getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
-                        + " count up to " + dSum, Toast.LENGTH_LONG).show();
-                /*System.out.println("The dealer was dealt a "
-                        + getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
-                        + " count up to " + dSum);*/
-                /*isHit = true;
+                //Scanner input = new Scanner(System.in);
+                //input.nextLine();
+                //Toast.makeText(GamePlayActivity.this, "The dealer was dealt a "
+                //+ getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
+                //+ " count up to " + dSum, Toast.LENGTH_LONG).show();
+                //System.out.println("The dealer was dealt a "
+                //+ getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
+                //+ " count up to " + dSum);
+                isHit = true;
             }else{   //stick
-                Toast.makeText(GamePlayActivity.this, "\nAll players cards will be displayed:", Toast.LENGTH_LONG).show();
+                //Toast.makeText(GamePlayActivity.this, "\nAll players cards will be displayed:", Toast.LENGTH_LONG).show();
                 //System.out.println("\nAll players cards will be displayed:");
-                printCards(players, playersNames);
+                //printCards(players, playersNames);
                 if(dSum > 21){
-                    Toast.makeText(GamePlayActivity.this, "Dealer busted with a total of " + dSum, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(GamePlayActivity.this, "Dealer busted with a total of " + dSum, Toast.LENGTH_LONG).show();
                     //System.out.println("Dealer busted with a total of " + dSum );
                     for(int i = 0; i < players.length - 1; i++){
-                        if(countCards(players[i]) <= 21)//checks if the player is not busted (used to be in the isPlayerNotBusted method)
-                            Toast.makeText(GamePlayActivity.this, playersNames.get(i) + ": won!", Toast.LENGTH_LONG).show();
+                        if(countCards(players[i]) <= 21) {//checks if the player is not busted (used to be in the isPlayerNotBusted method)
+                            //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + ": won!", Toast.LENGTH_LONG).show();
                             //System.out.println(playersNames.get(i) + ": won!");
-                        else
-                            Toast.makeText(GamePlayActivity.this, playersNames.get(i) + ": lost.", Toast.LENGTH_LONG).show();
+                        } else {
+                            //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + ": lost.", Toast.LENGTH_LONG).show();
                             //System.out.println(playersNames.get(i) + ": lost.");
+                        }
                     }
                 }else
                     for(int i = 0; i < players.length - 1; i++){
                         if(countCards(players[i]) <= 21){//checks if the player is not busted
-                            if(countCards(players[i]) > dSum)
-                                Toast.makeText(GamePlayActivity.this, playersNames.get(i) + ": won!", Toast.LENGTH_LONG).show();
+                            if(countCards(players[i]) > dSum) {
+                                //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + ": won!", Toast.LENGTH_LONG).show();
                                 //System.out.println(playersNames.get(i) + ": won!");
-                            else if(countCards(players[i]) == dSum)
-                                Toast.makeText(GamePlayActivity.this, playersNames.get(i) + " and the Dealer -- PUSH, DRAW", Toast.LENGTH_LONG).show();
+                            }else if(countCards(players[i]) == dSum) {
+                                //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + " and the Dealer -- PUSH, DRAW", Toast.LENGTH_LONG).show();
                                 //System.out.println(playersNames.get(i) + " and the Dealer -- PUSH, DRAW");
-                            else//player has less than dealerSum
-                                Toast.makeText(GamePlayActivity.this, playersNames.get(i) + " lost.", Toast.LENGTH_LONG).show();
+                            }else {//player has less than dealerSum
+                                //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + " lost.", Toast.LENGTH_LONG).show();
                                 //System.out.println(playersNames.get(i) + " lost.");
-                        }else
-                            Toast.makeText(GamePlayActivity.this, playersNames.get(i) + " lost.", Toast.LENGTH_LONG).show();
+                            }
+                        }else {
+                            //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + " lost.", Toast.LENGTH_LONG).show();
                             //System.out.println(playersNames.get(i) + " lost.");
+                        }
                     }
             }
         }while(isHit);
@@ -332,8 +350,7 @@ public class GamePlayActivity extends Activity {
         }
         return aceFound;
     }
-
-} **/
+}
 
     /*public class ImageAdapter extends BaseAdapter {
         Context context;
