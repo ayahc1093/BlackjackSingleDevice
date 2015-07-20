@@ -16,9 +16,11 @@ public class HitOrStickDialogBox extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity()).setTitle("Your Turn").setMessage("Would you like to hit or stick?")
+        String playersName = intent.getStringExtra("current player");
+        int sumOfCards = intent.getIntExtra("sum of cards", 0);
+        AlertDialog.Builder alerDialogBuilder = new AlertDialog.Builder(getActivity()).setTitle(playersName + " turn").setMessage("Your cards add up to: " + sumOfCards + "Would you like to hit or stick?")
                 .setPositiveButton("Hit", pListener).setNegativeButton("Stick", nListener);
-        return alertDialogBuilder.create();
+        return alerDialogBuilder.create();
     }
 
     DialogInterface.OnClickListener pListener = new DialogInterface.OnClickListener() {
