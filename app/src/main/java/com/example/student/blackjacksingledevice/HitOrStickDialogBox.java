@@ -26,16 +26,16 @@ public class HitOrStickDialogBox extends DialogFragment {
     DialogInterface.OnClickListener pListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface arg0, int arg1) {
-            intent.putExtra("Player choice", true);
-            HitOrStickDialogBox.this.startActivity(intent);
+            //intent.putExtra("Player choice", true);
+            //HitOrStickDialogBox.this.startActivity(intent);
         }
     };
 
     DialogInterface.OnClickListener nListener = new DialogInterface.OnClickListener() {
         @Override
          public void onClick(DialogInterface arg0, int arg1) {
-            intent.putExtra("Player choice", false);
-            HitOrStickDialogBox.this.startActivity(intent);
+            //intent.putExtra("Player choice", false);
+            //HitOrStickDialogBox.this.startActivity(intent);
 
         }
     };
