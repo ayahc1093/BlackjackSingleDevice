@@ -6,6 +6,8 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +37,7 @@ public class GamePlayActivity extends Activity {
         allNames = new ArrayList<>();
         allNames = getIntent().getStringArrayListExtra("all");
         //Add the dealer to the end of the array list of players
-        allNames.add("dealer");
+        allNames.add("Dealer");
 
         game = this;
         // To test that the ArrayList successfully transferred over with the Intent:
@@ -80,7 +82,8 @@ public class GamePlayActivity extends Activity {
         for (int i = 0; i < players.length - 1; i++) {
             //textView.append("It is " + playerNames.get(i) + "'s turn.");
             TextView textView = new TextView(game);
-            textView.setText("\nIt is " + playerNames.get(i) + "'s turn.\n");
+            //textView.setGravity(Gravity.CENTER_HORIZONTAL);
+            textView.setText("\nIt is " + playerNames.get(i) + "'s turn.");
             myLinearLayout.addView(textView);
             //Toast.makeText(game, "It is " + playerNames.get(i) + "'s turn.", Toast.LENGTH_SHORT).show();
             //myLinearLayout.addView(textView);
@@ -156,6 +159,9 @@ public class GamePlayActivity extends Activity {
     public void playersTurn(int i, int[][] players,boolean[] deck, ArrayList<String> playersName) {
         //game.printCards(players, playersName);
         if(isBlackJack(players[i])){
+            TextView textView = new TextView(game);
+            textView.setText(playersName.get(i) + " has BlackJack!! Your turn is over. You Won!");
+            myLinearLayout.addView(textView);
             //Toast.makeText(GamePlayActivity.this, playersName.get(i) + " has BlackJack!! Your turn is over. You Won!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -280,6 +286,9 @@ public class GamePlayActivity extends Activity {
         int dSum = countCards(players[players.length - 1]);
         boolean isHit;
 
+        TextView textView = new TextView(game);
+        textView.setText("\nIt is the dealer's turn. \nThe dealer's cards are: ");
+        myLinearLayout.addView(textView);
         //System.out.println("It is the dealer's turn. \nThe dealers cards are:"); //added this to print dealers first 2 cards
         //Toast.makeText(GamePlayActivity.this, "It is the dealer's turn. \nThe dealers cards are: ", Toast.LENGTH_LONG).show();
         //for (int i = 0; i < 2; i++)
