@@ -2,9 +2,12 @@ package com.example.student.blackjacksingledevice;
 
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,9 +21,13 @@ public class GamePlayActivity extends Activity {
     LinearLayout myLinearLayout;
 
     //Create a game object outside the onCreate method to be able to access it in the other methods
-    private static GamePlayActivity game = new GamePlayActivity();
+    //private static GamePlayActivity game = new GamePlayActivity();
     Intent intent;
-
+    //Ditto for TextView and DialogFragment:
+    TextView textView;
+    HitOrStickDialogBox dialogBox;
+    //Context context = game.getInstance();
+    GamePlayActivity game;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +37,20 @@ public class GamePlayActivity extends Activity {
         //Add the dealer to the end of the array list of players
         allNames.add("dealer");
 
+        game = this;
         // To test that the ArrayList successfully transferred over with the Intent:
         for (int i = 0; i < allNames.size(); i++) {
             player = allNames.get(i);
-            Toast.makeText(GamePlayActivity.this, "Player " + (i + 1) + ": " + player, Toast.LENGTH_SHORT).show();
+            Toast.makeText(game, "Player " + (i + 1) + ": " + player, Toast.LENGTH_SHORT).show();
         }
 
         myLinearLayout = (LinearLayout) findViewById(R.id.myLinearLayout);
-
+        /*textView = (TextView)findViewById(R.id.textView);
+        textView.setText("Here we go!");*/
+        //myLinearLayout.addView(textView);
+        FragmentManager manager = getFragmentManager();
+        dialogBox = new HitOrStickDialogBox();
+        //myLinearLayout.addView(textView);
         game.startGame(allNames);
         //grid.addView(myLinearLayout);
     }
@@ -48,6 +61,7 @@ public class GamePlayActivity extends Activity {
 
 
     public void startGame(ArrayList<String> playerNames) {
+
         boolean[] deck = new boolean[52];
         int amountOfPlayers = playerNames.size();
 
@@ -64,6 +78,12 @@ public class GamePlayActivity extends Activity {
         }
 
         for (int i = 0; i < players.length - 1; i++) {
+            //textView.append("It is " + playerNames.get(i) + "'s turn.");
+            TextView textView = new TextView(game);
+            textView.setText("\nIt is " + playerNames.get(i) + "'s turn.\n");
+            myLinearLayout.addView(textView);
+            //Toast.makeText(game, "It is " + playerNames.get(i) + "'s turn.", Toast.LENGTH_SHORT).show();
+            //myLinearLayout.addView(textView);
             //System.out.println("It is " + playerNames[i] + "'s turn.");
             playersTurn(i, players, deck, playerNames);
         }
@@ -71,13 +91,14 @@ public class GamePlayActivity extends Activity {
     }
 
     //populates the available card spaces to with a value of -1
-    public static void populateDeck(int[] playerDeck) {
+    public void populateDeck(int[] playerDeck) {
         for (int i = 0; i < playerDeck.length; i++) {
             playerDeck[i] = -1;
         }
     }
 
     //deals 2 cards to all the players and flips the value of the card to true in the deck array and makes sure that one card is not dealt twice
+    //removed static
     public void dealCards(boolean[] deck, int[] playerhand) {
         int count = 0;
         while (count < 2) {
@@ -187,10 +208,12 @@ public class GamePlayActivity extends Activity {
             /*intent = new Intent(this, HitOrStickDialogBox.class);
             intent.putExtra("current player", playersNames.get(currentPlayer));
             intent.putExtra("sum of cards", sumOfCards);
-            new HitOrStickDialogBox().show(getFragmentManager(), "My Fragment");
+            //new HitOrStickDialogBox().show(getFragmentManager(), "My Fragment");
             Bundle bundle = getIntent().getExtras();
             isHit = bundle.getBoolean("Player choice");**/
 
+            //TO SHOW dialogBox, RIGHT NOW WITHOUT INTENT:
+            //dialogBox.show(manager, "dialogBox");
             /*if(isHit)  {
                 Toast.makeText(GamePlayActivity.this, "The activity is working", Toast.LENGTH_LONG).show();
                 //hit(deck, players[currentPlayer]);
