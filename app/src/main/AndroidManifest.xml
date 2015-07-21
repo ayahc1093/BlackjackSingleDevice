@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.student.blackjacksingledevice" >
+    package="com.example.student.blackjacksingledevice"
+    android:versionCode="1"
+    android:versionName="1.0.0">
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:maxSdkVersion="22" />
 
     <application
         android:allowBackup="true"
