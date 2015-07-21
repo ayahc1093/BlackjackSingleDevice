@@ -215,14 +215,12 @@ public class GamePlayActivity extends Activity {
 
                 break;
             }
-            /*intent = new Intent(this, HitOrStickDialogBox.class);
-            intent.putExtra("current player", playersNames.get(currentPlayer));
-            intent.putExtra("sum of cards", sumOfCards);
+            //intent = new Intent(this, HitOrStickDialogBox.class);
+            //intent.putExtra("current player", playersNames.get(currentPlayer));
+            //intent.putExtra("sum of cards", sumOfCards);
             new HitOrStickDialogBox().show(getFragmentManager(), "My Fragment");
             Bundle bundle = getIntent().getExtras();
-            isHit = bundle.getBoolean("Player choice");*/
-
-            new HitOrStickDialogBox().show(getFragmentManager(), "My Fragment");
+            isHit = bundle.getBoolean("Player choice");
 
             //TO SHOW dialogBox, RIGHT NOW WITHOUT INTENT:
             /*manager = getFragmentManager();
