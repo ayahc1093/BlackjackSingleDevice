@@ -83,9 +83,9 @@ public class GamePlayActivity extends Activity {
             textView.setPadding(15, 0, 0, 0);
             myLinearLayout.addView(textView);
 
-            playersTurn(i, players, deck, playerNames);
+            game.playersTurn(i, players, deck, playerNames);
         }
-        dealersTurn(players, deck, playerNames);
+        game.dealersTurn(players, deck, playerNames);
     }
 
     //populates the available card spaces to with a value of -1
@@ -117,8 +117,8 @@ public class GamePlayActivity extends Activity {
             playersCards.setText(player + ":");
             playersCards.setPadding(15, 0, 0, 0);
             myLinearLayout.addView(playersCards);
-            for (int j = 0; j < playersHand[0].length && playersHand[1][j] != -1; j++) {
-                String cardFaceValue = getCardFaceValueText(playersHand, 1, j);
+            for (int j = 0; j < playersHand[i].length && playersHand[i][j] != -1; j++) {
+                String cardFaceValue = getCardFaceValueText(playersHand, i, j);
                 TextView card = new TextView(game);
                 card.setText(cardFaceValue);
                 card.setPadding(15, 0, 0, 0);

@@ -1,12 +1,12 @@
 package com.example.student.blackjacksingledevice;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class EndGameActivity extends ActionBarActivity {
+public class EndGameActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
