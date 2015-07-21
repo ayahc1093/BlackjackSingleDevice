@@ -16,14 +16,31 @@ public class HitOrStickDialogBox extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //String playersName = intent.getStringExtra("current player");
-        //int sumOfCards = intent.getIntExtra("sum of cards", 0);
-        AlertDialog.Builder alerDialogBuilder = new AlertDialog.Builder(getActivity()).setTitle(" turn").setMessage("Your cards add up to: Would you like to hit or stick?")
-                .setPositiveButton("Hit", pListener).setNegativeButton("Stick", nListener);
-        return alerDialogBuilder.create();
-    }
 
-    DialogInterface.OnClickListener pListener = new DialogInterface.OnClickListener() {
+        String playersName = getArguments().getString("current player");
+        int sumOfCards = getArguments().getInt("sum of cards");
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
+                .setTitle(playersName +"'s turn")
+                .setMessage("Your cards add up to: " + sumOfCards + ". \nWould you like to hit or stick?")
+                .setPositiveButton("Hit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        intent.putExtra("Player choice", true);
+                        HitOrStickDialogBox.this.startActivity(intent);
+                    }
+                }).setNegativeButton("Stick", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        intent.putExtra("Player choice", false);
+                        HitOrStickDialogBox.this.startActivity(intent);
+                    }
+                });
+            AlertDialog dialog = alertDialogBuilder.create();
+        return dialog;
+    }
+}
+
+ /*DialogInterface.OnClickListener pListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface arg0, int arg1) {
             intent.putExtra("Player choice", true);
@@ -37,10 +54,7 @@ public class HitOrStickDialogBox extends DialogFragment {
             intent.putExtra("Player choice", false);
             HitOrStickDialogBox.this.startActivity(intent);
         }
-    };
-}
-
-
+    };*/
 /*
 import android.app.AlertDialog;
 import android.app.Dialog;

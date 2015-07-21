@@ -218,9 +218,20 @@ public class GamePlayActivity extends Activity {
             //intent = new Intent(this, HitOrStickDialogBox.class);
             //intent.putExtra("current player", playersNames.get(currentPlayer));
             //intent.putExtra("sum of cards", sumOfCards);
-            new HitOrStickDialogBox().show(getFragmentManager(), "My Fragment");
-            Bundle bundle = getIntent().getExtras();
-            isHit = bundle.getBoolean("Player choice");
+            Bundle bundle = new Bundle();
+            bundle.putString("current player", playersNames.get(currentPlayer));
+            bundle.putInt("sum of cards", sumOfCards);
+            HitOrStickDialogBox dialogBox = new HitOrStickDialogBox();
+            dialogBox.setArguments(bundle);
+            dialogBox.show(getFragmentManager(), "My Fragment");
+            //Bundle bundle = getIntent().getExtras();
+            //isHit = bundle.getBoolean("Player choice");
+
+
+           // bundle.putString("edttext", "From Activity");
+            // set Fragmentclass Arguments
+
+
 
             //TO SHOW dialogBox, RIGHT NOW WITHOUT INTENT:
             /*manager = getFragmentManager();
