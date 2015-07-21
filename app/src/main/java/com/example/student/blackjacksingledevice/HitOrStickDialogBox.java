@@ -1,5 +1,6 @@
 package com.example.student.blackjacksingledevice;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,41 +11,84 @@ import android.os.Bundle;
 /**
  * Created by mcberliner on 7/14/2015.
  */
+
 public class HitOrStickDialogBox extends DialogFragment {
 
     //DOESN'T SEEM TO BE NECESSARY:
     //Intent intent = new Intent(this, GamePlayActivity.class);
 
+    /*Communicator communicator;*/
+    /*@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        communicator = (Communicator)activity;
+    }*/
+    //Create new Bundle to be sent back during onClick to GamePlayActivity.java
+    final Bundle bundleFromHitOrStick = new Bundle();
+    boolean hit;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         String playersName = getArguments().getString("current player");
         int sumOfCards = getArguments().getInt("sum of cards");
 
-        //Create new Bundle to be sent back during onClick to GamePlayActivity.java
-        final Bundle bundleFromHitOrStick = new Bundle();
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
-                .setTitle(playersName +"'s turn")
+                .setTitle(playersName + "'s turn")
                 .setMessage("Your cards add up to: " + sumOfCards + ". \nWould you like to hit or stick?")
                 .setPositiveButton("Hit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        bundleFromHitOrStick.putBoolean("Player choice", true);
+                        //GamePlayActivity.this.onDialogClick(true);
+                        //hit = true;
+                        /*bundleFromHitOrStick.clear();
+                        bundleFromHitOrStick.putBoolean("Player Choice", true);
+                        dialog.cancel();*/
+                        //bundleFromHitOrStick.putBoolean("Player choice", true);
+                        //communicator.receivedFromDialogFragment(true);
                         //DOESN'T SEEM TO BE NECESSARY:
                         //HitOrStickDialogBox.this.startActivity(intent);
                     }
                 }).setNegativeButton("Stick", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        bundleFromHitOrStick.putBoolean("Player choice", false);
+                        //GamePlayActivity.this.onDialogClick(false);
+                       /* hit = false;*/
+                        /*bundleFromHitOrStick.clear();
+                        bundleFromHitOrStick.putBoolean("Player Choice", false);*/
+                        //communicator.receivedFromDialogFragment(false);
+                        //bundleFromHitOrStick.putBoolean("Player choice", false);
                         //DOESN'T SEEM TO BE NECESSARY:
                         //HitOrStickDialogBox.this.startActivity(intent);
                     }
                 });
-            AlertDialog dialog = alertDialogBuilder.create();
+      /*  if (hit) {
+
+        } else {
+
+        };*/
+        AlertDialog dialog = alertDialogBuilder.create();
         return dialog;
     }
+
+   /* public interface PlayerChoice{
+        public void choice(boolean check);
+    }*/
 }
+    /*interface Communicator {
+        public abstract void receivedFromDialogFragment(Boolean value);
+    }
+    Communicator communicator;
+    // make sure the Activity implemented it
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.communicator = (Communicator) activity;
+        } catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement Communicator");
+        }
+    }
+}*/
 
  /*DialogInterface.OnClickListener pListener = new DialogInterface.OnClickListener() {
         @Override

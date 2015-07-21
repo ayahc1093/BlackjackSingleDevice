@@ -2,7 +2,9 @@ package com.example.student.blackjacksingledevice;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
@@ -27,6 +29,7 @@ public class GamePlayActivity extends Activity {
     HitOrStickDialogBox dialogBox;
     FragmentManager manager;
     GamePlayActivity game;
+    boolean isHit = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,7 +207,7 @@ public class GamePlayActivity extends Activity {
         } while (isHit);
     }*/
     public void promptUser(int currentPlayer, int[][] players, boolean[] deck, ArrayList<String> playersNames) {
-        boolean isHit = true;
+        //boolean isHit = true;
         do{
             int sumOfCards = countCards(players[currentPlayer]);
             if (sumOfCards > 21) {
@@ -218,16 +221,32 @@ public class GamePlayActivity extends Activity {
             //intent = new Intent(this, HitOrStickDialogBox.class);
             //intent.putExtra("current player", playersNames.get(currentPlayer));
             //intent.putExtra("sum of cards", sumOfCards);
-            Bundle bundleFromGamePlayActivity = new Bundle();
+            /*Bundle bundleFromGamePlayActivity = new Bundle();
             bundleFromGamePlayActivity.putString("current player", playersNames.get(currentPlayer));
             bundleFromGamePlayActivity.putInt("sum of cards", sumOfCards);
             HitOrStickDialogBox dialogBox = new HitOrStickDialogBox();
             dialogBox.setArguments(bundleFromGamePlayActivity);
             dialogBox.show(getFragmentManager(), "My Fragment");
             Bundle bundleFromDialogFragment = new Bundle();
-            isHit = bundleFromDialogFragment.getBoolean("Player choice");
-
-
+            isHit = bundleFromDialogFragment.getBoolean("Player choice");*/
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(game)
+                    .setTitle(playersNames.get(currentPlayer) + "'s turn")
+                    .setMessage("Your cards add up to: " + sumOfCards + ". \nWould you like to hit or stick?")
+                    .setPositiveButton("Hit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(game, "You clicked Hit", Toast.LENGTH_SHORT).show();
+                            isHit = true;
+                        }
+                    });
+                    alertDialogBuilder.setNegativeButton("Stick", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(game, "You clicked Stick", Toast.LENGTH_SHORT).show();
+                            isHit = false;
+                        }
+                    });
+            alertDialogBuilder.show();
            // bundle.putString("edttext", "From Activity");
             // set Fragmentclass Arguments
 
@@ -256,6 +275,10 @@ public class GamePlayActivity extends Activity {
         } while(isHit);
         // input.close();
     }
+
+   /* public boolean onDialogClick(Boolean value) {
+        return isHit = value;
+    }*/
 
     public static int countCards(int[] cards) {
         int sum = 0;
