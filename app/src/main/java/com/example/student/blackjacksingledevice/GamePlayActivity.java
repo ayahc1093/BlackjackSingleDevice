@@ -222,7 +222,7 @@ public class GamePlayActivity extends Activity {
             Bundle bundle = getIntent().getExtras();
             isHit = bundle.getBoolean("Player choice");*/
 
-            //new HitOrStickDialogBox().show(getFragmentManager(), "My Fragment");
+            new HitOrStickDialogBox().show(getFragmentManager(), "My Fragment");
 
             //TO SHOW dialogBox, RIGHT NOW WITHOUT INTENT:
             /*manager = getFragmentManager();
