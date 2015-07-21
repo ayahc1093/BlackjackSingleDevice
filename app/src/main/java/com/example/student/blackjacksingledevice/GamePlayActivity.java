@@ -218,14 +218,14 @@ public class GamePlayActivity extends Activity {
             //intent = new Intent(this, HitOrStickDialogBox.class);
             //intent.putExtra("current player", playersNames.get(currentPlayer));
             //intent.putExtra("sum of cards", sumOfCards);
-            Bundle bundle = new Bundle();
-            bundle.putString("current player", playersNames.get(currentPlayer));
-            bundle.putInt("sum of cards", sumOfCards);
+            Bundle bundleFromGamePlayActivity = new Bundle();
+            bundleFromGamePlayActivity.putString("current player", playersNames.get(currentPlayer));
+            bundleFromGamePlayActivity.putInt("sum of cards", sumOfCards);
             HitOrStickDialogBox dialogBox = new HitOrStickDialogBox();
-            dialogBox.setArguments(bundle);
+            dialogBox.setArguments(bundleFromGamePlayActivity);
             dialogBox.show(getFragmentManager(), "My Fragment");
-            //Bundle bundle = getIntent().getExtras();
-            //isHit = bundle.getBoolean("Player choice");
+            Bundle bundleFromDialogFragment = new Bundle();
+            isHit = bundleFromDialogFragment.getBoolean("Player choice");
 
 
            // bundle.putString("edttext", "From Activity");

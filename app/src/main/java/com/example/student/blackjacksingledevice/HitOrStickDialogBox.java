@@ -12,27 +12,33 @@ import android.os.Bundle;
  */
 public class HitOrStickDialogBox extends DialogFragment {
 
-    Intent intent;
+    //DOESN'T SEEM TO BE NECESSARY:
+    //Intent intent = new Intent(this, GamePlayActivity.class);
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         String playersName = getArguments().getString("current player");
         int sumOfCards = getArguments().getInt("sum of cards");
+
+        //Create new Bundle to be sent back during onClick to GamePlayActivity.java
+        final Bundle bundleFromHitOrStick = new Bundle();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
                 .setTitle(playersName +"'s turn")
                 .setMessage("Your cards add up to: " + sumOfCards + ". \nWould you like to hit or stick?")
                 .setPositiveButton("Hit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        intent.putExtra("Player choice", true);
-                        HitOrStickDialogBox.this.startActivity(intent);
+                        bundleFromHitOrStick.putBoolean("Player choice", true);
+                        //DOESN'T SEEM TO BE NECESSARY:
+                        //HitOrStickDialogBox.this.startActivity(intent);
                     }
                 }).setNegativeButton("Stick", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        intent.putExtra("Player choice", false);
-                        HitOrStickDialogBox.this.startActivity(intent);
+                        bundleFromHitOrStick.putBoolean("Player choice", false);
+                        //DOESN'T SEEM TO BE NECESSARY:
+                        //HitOrStickDialogBox.this.startActivity(intent);
                     }
                 });
             AlertDialog dialog = alertDialogBuilder.create();
