@@ -77,6 +77,9 @@ public class GamePlayActivity extends Activity {
             dealCards(deck, players[i]);
         }
 
+        //call the print cards method over here so that the cards should only print once
+        game.printCards(players, playerNames);
+
         for (int i = 0; i < players.length - 1; i++) {
             TextView textView = new TextView(game);
             textView.setText("\nIt is " + playerNames.get(i) + "'s turn.");
@@ -154,7 +157,8 @@ public class GamePlayActivity extends Activity {
     }
 
     public void playersTurn(int i, int[][] players,boolean[] deck, ArrayList<String> playersName) {
-        game.printCards(players, playersName);
+        //We dont need to call this method more than once - the cards will stay on the board so that all players can see them at all times
+        //game.printCards(players, playersName);
         if(isBlackJack(players[i])){
             TextView textView = new TextView(game);
             textView.setText(playersName.get(i) + " has BlackJack!! Your turn is over. You Won!");
@@ -202,7 +206,7 @@ public class GamePlayActivity extends Activity {
     public void promptUser(int currentPlayer, int[][] players, boolean[] deck, ArrayList<String> playersNames) {
         boolean isHit = true;
         do{
-            int sumOfCards = 25;//countCards(players[currentPlayer]);
+            int sumOfCards = countCards(players[currentPlayer]);
             if (sumOfCards > 21) {
                 TextView textView = new TextView(game);
                 textView.setText(playersNames.get(currentPlayer) + ", sorry to say this, but you Busted. Your turn is over; You lost.");
@@ -218,10 +222,12 @@ public class GamePlayActivity extends Activity {
             Bundle bundle = getIntent().getExtras();
             isHit = bundle.getBoolean("Player choice");*/
 
+            //new HitOrStickDialogBox().show(getFragmentManager(), "My Fragment");
+
             //TO SHOW dialogBox, RIGHT NOW WITHOUT INTENT:
-            manager = getFragmentManager();
+            /*manager = getFragmentManager();
             dialogBox = new HitOrStickDialogBox();
-            dialogBox.show(manager, "dialogBox");
+            dialogBox.show(manager, "dialogBox");**/
             if(isHit)  {
                 //Toast.makeText(GamePlayActivity.this, "The activity is working", Toast.LENGTH_LONG).show();
                 hit(deck, players[currentPlayer]);
