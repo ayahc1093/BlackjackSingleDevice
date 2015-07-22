@@ -1,5 +1,6 @@
 package com.example.student.blackjacksingledevice;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -13,14 +14,14 @@ import android.os.Bundle;
 public class HitOrStickDialogBox extends DialogFragment {
 
     //DOESN'T SEEM TO BE NECESSARY:
-    //Intent intent = new Intent(this, GamePlayActivity.class);
+    Intent intent;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         String playersName = getArguments().getString("current player");
         int sumOfCards = getArguments().getInt("sum of cards");
-
+        intent = new Intent(getActivity(), GamePlayActivity.class);
         //Create new Bundle to be sent back during onClick to GamePlayActivity.java
         final Bundle bundleFromHitOrStick = new Bundle();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
@@ -29,20 +30,46 @@ public class HitOrStickDialogBox extends DialogFragment {
                 .setPositiveButton("Hit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        bundleFromHitOrStick.putBoolean("Player choice", true);
-                        //DOESN'T SEEM TO BE NECESSARY:
+                        mListener.onDialogPositiveClick(HitOrStickDialogBox.this);
+                        //Intent.putExtra("Player Choice", true);
+                        //bundleFromHitOrStick.putBoolean("Player choice", true);
                         //HitOrStickDialogBox.this.startActivity(intent);
                     }
+
+
                 }).setNegativeButton("Stick", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        bundleFromHitOrStick.putBoolean("Player choice", false);
-                        //DOESN'T SEEM TO BE NECESSARY:
+                        mListener.onDialogNegativeClick(HitOrStickDialogBox.this);
+                        //intent.putExtra("Player Choice", false);
+                        //bundleFromHitOrStick.putBoolean("Player choice", false);
                         //HitOrStickDialogBox.this.startActivity(intent);
                     }
                 });
-            AlertDialog dialog = alertDialogBuilder.create();
+        AlertDialog dialog = alertDialogBuilder.create();
         return dialog;
+    }
+    public interface NoticeDialogListener {
+        public void onDialogPositiveClick(DialogFragment dialog);
+        public void onDialogNegativeClick(DialogFragment dialog);
+    }
+
+    // Use this instance of the interface to deliver action events
+    NoticeDialogListener mListener;
+
+    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        // Verify that the host activity implements the callback interface
+        try {
+            // Instantiate the NoticeDialogListener so we can send events to the host
+            mListener = (NoticeDialogListener) activity;
+        } catch (ClassCastException e) {
+            // The activity doesn't implement the interface, throw exception
+            throw new ClassCastException(activity.toString()
+                    + " must implement NoticeDialogListener");
+        }
     }
 }
 

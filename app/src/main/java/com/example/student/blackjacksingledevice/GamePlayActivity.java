@@ -2,16 +2,19 @@ package com.example.student.blackjacksingledevice;
 
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class GamePlayActivity extends Activity {
+public class GamePlayActivity extends Activity implements HitOrStickDialogBox.NoticeDialogListener{
 
     //it works!!
 
@@ -27,6 +30,8 @@ public class GamePlayActivity extends Activity {
     HitOrStickDialogBox dialogBox;
     FragmentManager manager;
     GamePlayActivity game;
+    boolean isHit;
+    Button btnPlayGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,7 @@ public class GamePlayActivity extends Activity {
         }
 
         myLinearLayout = (LinearLayout) findViewById(R.id.myLinearLayout);
+
         /*textView = (TextView)findViewById(R.id.textView);
         textView.setText("Here we go!");*/
         //myLinearLayout.addView(textView);
@@ -52,7 +58,7 @@ public class GamePlayActivity extends Activity {
         dialogBox = new HitOrStickDialogBox();*/
         //myLinearLayout.addView(textView);
         game.startGame(allNames);
-        //grid.addView(myLinearLayout);
+        //grid.addView(myLinearLayout)
     }
 
 
@@ -60,7 +66,7 @@ public class GamePlayActivity extends Activity {
     }
 
 
-    public void startGame(ArrayList<String> playerNames) {
+    public void startGame(final ArrayList<String> playerNames) {
 
         boolean[] deck = new boolean[52];
         int amountOfPlayers = playerNames.size();
@@ -126,8 +132,8 @@ public class GamePlayActivity extends Activity {
                 card.setText(cardFaceValue);
                 card.setPadding(15, 0, 0, 0);
                 myLinearLayout.addView(card);
-                //if(playersNames[player] == "Dealer" && currentPlayer != playersHand.length -1)
-                //break;
+                if(playersNames.get(i) == "Dealer")
+                break;
             }
         }
     }
@@ -166,7 +172,12 @@ public class GamePlayActivity extends Activity {
             myLinearLayout.addView(textView);
             return;
         }
-        game.promptUser(i, players, deck, playersName);
+
+        Button btnPlayGame = (Button)findViewById(R.id.btnPlayGame);
+        btnPlayGame.setOnClickListener( new MyLovelyOnClickListener(i, players, deck, playersName));
+
+
+        //game.promptUser(i, players, deck, playersName);
 
     }
 
@@ -203,8 +214,17 @@ public class GamePlayActivity extends Activity {
             isHit = false;
         } while (isHit);
     }*/
+
+   /* public void promptUser(View v) {
+        String tag = v.getTag().toString();
+       *//* int i = Integer.parseInt(tag.split(",")[0]);
+        int[] deck = Integer[].valueOf(tag.split(",")[1]);
+        int[][] players = Integer[][].valueOf(tag.split(",")[2]);
+        ArrayList<String> playersNames = ArrayList.class(tag.split(",")[3]);
+        this.promptUser(i, players, deck, playersNames);*//*
+    }*/
     public void promptUser(int currentPlayer, int[][] players, boolean[] deck, ArrayList<String> playersNames) {
-        boolean isHit = true;
+        //boolean isHit = true;
         do{
             int sumOfCards = countCards(players[currentPlayer]);
             if (sumOfCards > 21) {
@@ -224,11 +244,12 @@ public class GamePlayActivity extends Activity {
             HitOrStickDialogBox dialogBox = new HitOrStickDialogBox();
             dialogBox.setArguments(bundleFromGamePlayActivity);
             dialogBox.show(getFragmentManager(), "My Fragment");
-            Bundle bundleFromDialogFragment = new Bundle();
-            isHit = bundleFromDialogFragment.getBoolean("Player choice");
+            //Bundle bundleFromDialogFragment = new Bundle();
+            //isHit = getIntent().getBooleanExtra("Player choice", true);
+            Toast.makeText(game, "Out of fragment: isHit = " + isHit, Toast.LENGTH_SHORT).show();
 
 
-           // bundle.putString("edttext", "From Activity");
+            // bundle.putString("edttext", "From Activity");
             // set Fragmentclass Arguments
 
 
@@ -255,6 +276,27 @@ public class GamePlayActivity extends Activity {
             }
         } while(isHit);
         // input.close();
+    }
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        // User touched the dialog's positive button
+        gotHit(true);
+        Toast.makeText(game, "isHit = " + isHit, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+        gotHit(false);
+        Toast.makeText(game, "isHit = " + isHit, Toast.LENGTH_SHORT).show();
+    }
+
+    public boolean gotHit(Boolean value){
+        return isHit = value;
     }
 
     public static int countCards(int[] cards) {
@@ -437,6 +479,28 @@ public class GamePlayActivity extends Activity {
         }
         return aceFound;
     }
+
+    public class MyLovelyOnClickListener implements View.OnClickListener
+    {
+
+        int i;
+        int[][] player;
+        boolean[] deck;
+        ArrayList<String> playerNames;
+        public MyLovelyOnClickListener(int i, int[][] player, boolean[] deck, ArrayList<String> playerNames) {
+            this.i = i;
+            this.player = player;
+            this.deck = deck;
+            this.playerNames = playerNames;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            promptUser(i, player, deck, playerNames);
+        }
+
+    };
 }
 //Misc. code (INCLUDING REMOVED TOAST MESSAGES/SYSTEM.OUT.PRINLN()'S, ORGANIZED BY METHOD:
     /*startGame method:
