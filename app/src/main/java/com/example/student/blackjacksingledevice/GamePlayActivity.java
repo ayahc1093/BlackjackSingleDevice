@@ -480,8 +480,7 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
         return aceFound;
     }
 
-    public class MyOnClickListener implements View.OnClickListener
-    {
+    public class MyOnClickListener implements View.OnClickListener  {
 
         int i;
         int[][] player;
