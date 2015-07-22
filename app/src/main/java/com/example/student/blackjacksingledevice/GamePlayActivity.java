@@ -174,7 +174,7 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
         }
 
         Button btnPlayGame = (Button)findViewById(R.id.btnPlayGame);
-        btnPlayGame.setOnClickListener( new MyLovelyOnClickListener(i, players, deck, playersName));
+        btnPlayGame.setOnClickListener(new MyOnClickListener(i, players, deck, playersName));
 
 
         //game.promptUser(i, players, deck, playersName);
@@ -480,14 +480,14 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
         return aceFound;
     }
 
-    public class MyLovelyOnClickListener implements View.OnClickListener
+    public class MyOnClickListener implements View.OnClickListener
     {
 
         int i;
         int[][] player;
         boolean[] deck;
         ArrayList<String> playerNames;
-        public MyLovelyOnClickListener(int i, int[][] player, boolean[] deck, ArrayList<String> playerNames) {
+        public MyOnClickListener(int i, int[][] player, boolean[] deck, ArrayList<String> playerNames) {
             this.i = i;
             this.player = player;
             this.deck = deck;
