@@ -1,4 +1,4 @@
-package com.example.student.blackjacksingledevice;
+package com.candeapps.blackjacksingledevice;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+/*import com.candeapps.blackjacksingledevice.blackjacksingledevice.R;*/
 
 
 public class OpeningActivity extends Activity {

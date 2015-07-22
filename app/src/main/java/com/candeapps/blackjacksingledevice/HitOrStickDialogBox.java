@@ -1,4 +1,4 @@
-package com.example.student.blackjacksingledevice;
+package com.candeapps.blackjacksingledevice;
 
 import android.app.Activity;
 import android.app.AlertDialog;

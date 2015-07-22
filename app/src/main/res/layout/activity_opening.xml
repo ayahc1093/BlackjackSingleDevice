@@ -14,7 +14,7 @@
         android:id="@+id/blackJackImage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:src="@drawable/rsz_blackjackimage"
+        android:src="@drawable/card_symbols_512"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 

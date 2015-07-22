@@ -1,4 +1,4 @@
-package com.example.student.blackjacksingledevice;
+package com.candeapps.blackjacksingledevice;
 
 
 import android.app.Activity;
@@ -12,9 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*import com.candeapps.blackjacksingledevice.blackjacksingledevice.R;*/
+
 import java.util.ArrayList;
 
-public class GamePlayActivity extends Activity implements HitOrStickDialogBox.NoticeDialogListener{
+public class GamePlayActivity extends Activity implements HitOrStickDialogBox.NoticeDialogListener {
 
     //it works!!
 
@@ -30,8 +32,8 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
     HitOrStickDialogBox dialogBox;
     FragmentManager manager;
     GamePlayActivity game;
-    boolean isHit;
-    Button btnPlayGame;
+    boolean isHit = true;
+    //Button btnPlayGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,23 +50,20 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
             player = allNames.get(i);
             Toast.makeText(game, "Player " + (i + 1) + ": " + player, Toast.LENGTH_SHORT).show();
         }
-
         myLinearLayout = (LinearLayout) findViewById(R.id.myLinearLayout);
-
-        /*textView = (TextView)findViewById(R.id.textView);
-        textView.setText("Here we go!");*/
-        //myLinearLayout.addView(textView);
-        /*manager = getFragmentManager();
-        dialogBox = new HitOrStickDialogBox();*/
-        //myLinearLayout.addView(textView);
         game.startGame(allNames);
-        //grid.addView(myLinearLayout)
     }
 
 
     public GamePlayActivity() {
     }
 
+    //PUT BUTTON FOR DEALER'S TURN HERE!!!!
+       /* Button btnDealersTurn = new Button(game);
+        btnDealersTurn.setText("Dealer's Turn");
+        btnDealersTurn.setOnClickListener(new MyDealersTurnBtnOnClickListener(players, deck, playerNames));
+        myLinearLayout.addView(btnDealersTurn);*/
+    //game.dealersTurn(players, deck, playerNames);
 
     public void startGame(final ArrayList<String> playerNames) {
 
@@ -85,16 +84,32 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
 
         //call the print cards method over here so that the cards should only print once
         game.printCards(players, playerNames);
+        //Button btnPlayGame = (Button)findViewById(R.id.btnPlayGame);
 
-        for (int i = 0; i < players.length - 1; i++) {
+        for (int i = 0; i < players.length - 2; i++) {
             TextView textView = new TextView(game);
             textView.setText("\nIt is " + playerNames.get(i) + "'s turn.");
             textView.setPadding(15, 0, 0, 0);
             myLinearLayout.addView(textView);
-
             game.playersTurn(i, players, deck, playerNames);
         }
-        game.dealersTurn(players, deck, playerNames);
+    }
+
+    public void playersTurn(int i, int[][] players,boolean[] deck, ArrayList<String> playersName) {
+        //We dont need to call this method more than once - the cards will stay on the board so that all players can see them at all times
+        //game.printCards(players, playersName);
+        if(isBlackJack(players[i])){
+            TextView textView = new TextView(game);
+            textView.setText(playersName.get(i) + " has BlackJack!! Your turn is over. You Won!");
+            textView.setPadding(15, 0, 0, 0);
+            myLinearLayout.addView(textView);
+            return;
+        }
+        Button btnPlayGame = new Button(game);
+        btnPlayGame.setText("Play Game");
+        btnPlayGame.setOnClickListener(new MyPlayGameBtnOnClickListener(i, players, deck, playersName));
+        myLinearLayout.addView(btnPlayGame);
+        //game.promptUser(i, players, deck, playersName);
     }
 
     //populates the available card spaces to with a value of -1
@@ -162,25 +177,6 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
         return cardFaceValue;
     }
 
-    public void playersTurn(int i, int[][] players,boolean[] deck, ArrayList<String> playersName) {
-        //We dont need to call this method more than once - the cards will stay on the board so that all players can see them at all times
-        //game.printCards(players, playersName);
-        if(isBlackJack(players[i])){
-            TextView textView = new TextView(game);
-            textView.setText(playersName.get(i) + " has BlackJack!! Your turn is over. You Won!");
-            textView.setPadding(15, 0, 0, 0);
-            myLinearLayout.addView(textView);
-            return;
-        }
-
-        Button btnPlayGame = (Button)findViewById(R.id.btnPlayGame);
-        btnPlayGame.setOnClickListener(new MyOnClickListener(i, players, deck, playersName));
-
-
-        //game.promptUser(i, players, deck, playersName);
-
-    }
-
     public static boolean isBlackJack(int[] playerHand){
         boolean oneTenValueCard=false;
         boolean oneAceCard=false;
@@ -195,34 +191,6 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
         return false;
     }
 
-    //will use this method instead of the original prompt user method until we can get the dialog box and the toast messages to work
-   /* public void promptUser(int currentPlayer, int[][] players,boolean[] deck, ArrayList<String> playersNames) {
-        boolean isHit = true;
-        do {
-            int sumOfCards = countCards(players[currentPlayer]);
-            if (sumOfCards > 21) {
-                //Not sure what goes here: I think player busts so I added a TextView:
-                TextView textView = new TextView(game);
-                textView.setText("The value of your cards is greater than 21; Sorry to say this, but you busted!");
-                myLinearLayout.addView(textView);
-                //Toast.makeText(GamePlayActivity.this, "This toast message works", Toast.LENGTH_LONG).show();
-                break;
-            }
-            if (isHit) {
-                hit(deck, players[currentPlayer]);
-            }
-            isHit = false;
-        } while (isHit);
-    }*/
-
-   /* public void promptUser(View v) {
-        String tag = v.getTag().toString();
-       *//* int i = Integer.parseInt(tag.split(",")[0]);
-        int[] deck = Integer[].valueOf(tag.split(",")[1]);
-        int[][] players = Integer[][].valueOf(tag.split(",")[2]);
-        ArrayList<String> playersNames = ArrayList.class(tag.split(",")[3]);
-        this.promptUser(i, players, deck, playersNames);*//*
-    }*/
     public void promptUser(int currentPlayer, int[][] players, boolean[] deck, ArrayList<String> playersNames) {
         //boolean isHit = true;
         do{
@@ -232,37 +200,22 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
                 textView.setText(playersNames.get(currentPlayer) + ", sorry to say this, but you Busted. Your turn is over; You lost.");
                 textView.setPadding(15, 0, 0, 0);
                 myLinearLayout.addView(textView);
-
                 break;
             }
-            //intent = new Intent(this, HitOrStickDialogBox.class);
-            //intent.putExtra("current player", playersNames.get(currentPlayer));
-            //intent.putExtra("sum of cards", sumOfCards);
             Bundle bundleFromGamePlayActivity = new Bundle();
             bundleFromGamePlayActivity.putString("current player", playersNames.get(currentPlayer));
             bundleFromGamePlayActivity.putInt("sum of cards", sumOfCards);
+            Toast.makeText(game, "Out of fragment: isHit = " + isHit, Toast.LENGTH_SHORT).show();
             HitOrStickDialogBox dialogBox = new HitOrStickDialogBox();
             dialogBox.setArguments(bundleFromGamePlayActivity);
             dialogBox.show(getFragmentManager(), "My Fragment");
-            //Bundle bundleFromDialogFragment = new Bundle();
-            //isHit = getIntent().getBooleanExtra("Player choice", true);
-            Toast.makeText(game, "Out of fragment: isHit = " + isHit, Toast.LENGTH_SHORT).show();
 
 
-            // bundle.putString("edttext", "From Activity");
-            // set Fragmentclass Arguments
-
-
-
-            //TO SHOW dialogBox, RIGHT NOW WITHOUT INTENT:
-            /*manager = getFragmentManager();
-            dialogBox = new HitOrStickDialogBox();
-            dialogBox.show(manager, "dialogBox");**/
             if(isHit)  {
                 //Toast.makeText(GamePlayActivity.this, "The activity is working", Toast.LENGTH_LONG).show();
                 hit(deck, players[currentPlayer]);
                 TextView textview2 = new TextView(game);
-                textview2.setText("You were dealt a " + getCardFaceValueText(players, currentPlayer, getPlayersFirstEmptyCardIndex(players[currentPlayer])-1));
+                textview2.setText(playersNames.get(currentPlayer)+ ", you were dealt a " + getCardFaceValueText(players, currentPlayer, getPlayersFirstEmptyCardIndex(players[currentPlayer])-1));
                 textview2.setPadding(15, 0, 0, 0);
                 myLinearLayout.addView(textview2);
                 //need to add here if its a 10,11,12 that its king queen or jack, removed toast and system.out.println
@@ -275,24 +228,25 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
 
             }
         } while(isHit);
+        Button btnDealersTurn = new Button(game);
+        btnDealersTurn.setText("Dealer's Turn");
+        btnDealersTurn.setOnClickListener(new MyDealersTurnBtnOnClickListener(players, deck, playersNames));
+        myLinearLayout.addView(btnDealersTurn);
         // input.close();
     }
-    // The dialog fragment receives a reference to this Activity through the
-    // Fragment.onAttach() callback, which it uses to call the following methods
-    // defined by the NoticeDialogFragment.NoticeDialogListener interface
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         // User touched the dialog's positive button
         gotHit(true);
-        Toast.makeText(game, "isHit = " + isHit, Toast.LENGTH_SHORT).show();
+        Toast.makeText(game, " ++ isHit = " + isHit, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         // User touched the dialog's negative button
         gotHit(false);
-        Toast.makeText(game, "isHit = " + isHit, Toast.LENGTH_SHORT).show();
+        Toast.makeText(game, "-- isHit = " + isHit, Toast.LENGTH_SHORT).show();
     }
 
     public boolean gotHit(Boolean value){
@@ -393,9 +347,7 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
                         + ".\nYour cards now count up to " + dSum);
                 textView4.setPadding(15, 0, 0, 0);
                 myLinearLayout.addView(textView4);
-                //MAYBE ADD A FRAGMENT, SO MORE INTERACTIVE, OTHERWISE THE APP JUST PUTS EVERYTHING ON THE SCREEN.... NOT VERY FUN.... :-(
-                //Scanner input = new Scanner(System.in);
-                //input.nextLine();
+
 
                 isHit = true;
             }else{   //stick
@@ -417,13 +369,11 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
                             textView7.setText(playersNames.get(i) + ": won!");
                             textView7.setPadding(15, 0, 0, 0);
                             myLinearLayout.addView(textView7);
-
                         } else {
                             TextView textView8 = new TextView(game);
                             textView8.setText(playersNames.get(i) + ": lost :-( " );
                             textView8.setPadding(15, 0, 0, 0);
                             myLinearLayout.addView(textView8);
-
                         }
                     }
                 }else
@@ -435,7 +385,7 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
                                 textView9.setPadding(15, 0, 0, 0);
                                 myLinearLayout.addView(textView9);
 
-                            }else if(countCards(players[i]) == dSum) {
+                               }else if(countCards(players[i]) == dSum) {
                                 TextView textView10 = new TextView(game);
                                 textView10.setText(playersNames.get(i) + " and the Dealer -- PUSH, DRAW");
                                 textView10.setPadding(15, 0, 0, 0);
@@ -448,7 +398,7 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
                                 myLinearLayout.addView(textView11);
 
                             }
-                        }else {
+                        } else {
                             TextView textView12 = new TextView(game);
                             textView12.setText(playersNames.get(i) + " lost.");
                             textView12.setPadding(15, 0, 0, 0);
@@ -458,6 +408,16 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
                     }
             }
         }while(isHit);
+        Button btnContinue = new Button(game);
+        btnContinue.setText("Continue");
+        btnContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GamePlayActivity.this, EndGameActivity.class);
+                startActivity(intent);
+            }
+        });
+        myLinearLayout.addView(btnContinue);
     }
 
     public static boolean isThereOneAceHigh(int [] dealer, int dealersSum){
@@ -480,13 +440,13 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
         return aceFound;
     }
 
-    public class MyOnClickListener implements View.OnClickListener  {
+    public class MyPlayGameBtnOnClickListener implements View.OnClickListener  {
 
         int i;
         int[][] player;
         boolean[] deck;
         ArrayList<String> playerNames;
-        public MyOnClickListener(int i, int[][] player, boolean[] deck, ArrayList<String> playerNames) {
+        public MyPlayGameBtnOnClickListener(int i, int[][] player, boolean[] deck, ArrayList<String> playerNames) {
             this.i = i;
             this.player = player;
             this.deck = deck;
@@ -494,137 +454,25 @@ public class GamePlayActivity extends Activity implements HitOrStickDialogBox.No
         }
 
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v)        {
             promptUser(i, player, deck, playerNames);
         }
+    };
 
+    public class MyDealersTurnBtnOnClickListener implements View.OnClickListener  {
+
+        int[][] player;
+        boolean[] deck;
+        ArrayList<String> playerNames;
+        public MyDealersTurnBtnOnClickListener(int[][] player, boolean[] deck, ArrayList<String> playerNames) {
+            this.player = player;
+            this.deck = deck;
+            this.playerNames = playerNames;
+        }
+
+        @Override
+        public void onClick(View v) {
+            dealersTurn(player, deck, playerNames);
+        }
     };
 }
-//Misc. code (INCLUDING REMOVED TOAST MESSAGES/SYSTEM.OUT.PRINLN()'S, ORGANIZED BY METHOD:
-    /*startGame method:
-        //Toast.makeText(game, "It is " + playerNames.get(i) + "'s turn.", Toast.LENGTH_SHORT).show();
-        //System.out.println("It is " + playerNames[i] + "'s turn.");
-    * populateDeck method:
-    *   N/A
-    * dealCards method:
-    *   N/A
-    * printCards method:
-    *   None
-    * getCardFaceValueText method:
-    *   N/A
-    * playersTurn method:
-    *    //Toast.makeText(GamePlayActivity.this, playersName.get(i) + " has BlackJack!! Your turn is over. You Won!", Toast.LENGTH_LONG).show();
-    * isBlackJack method:
-    *   N/A
-    * promptUser method:
-    *   textView: //Toast.makeText(GamePlayActivity.this, "It seems like it is working", Toast.LENGTH_LONG).show();
-          //Toast.makeText(GamePlayActivity.this, playersNames.get(currentPlayer) + ", you Busted. Your turn is over; You lost ", Toast.LENGTH_LONG).show();
-          //System.out.println(playersNames.get(currentPlayer)  + ", you Busted. Your turn is over; You lost ");
-        textView2:  //Toast.makeText(GamePlayActivity.this, "You were dealt a " + getCardFaceValueText(players, currentPlayer, getPlayersFirstEmptyCardIndex(players[currentPlayer])-1),
-                        //Toast.LENGTH_SHORT).show();
-                //System.out.println("You were dealt a " + getCardFaceValueText(players, currentPlayer, getPlayersFirstEmptyCardIndex(players[currentPlayer])-1));
-        textView3: //Toast.makeText(GamePlayActivity.this, "The activity is really working", Toast.LENGTH_LONG).show();
-                //Toast.makeText(GamePlayActivity.this, playersNames.get(currentPlayer) + ", Your turn is over", Toast.LENGTH_LONG).show();
-                //System.out.println(playersNames.get(currentPlayer) + ", Your turn is over");*
-    * countCards method:
-    *   N/A
-    * isSumLessThanEleven:
-    *   N/A
-    * hit method:
-    *   N/A
-    * getPlayersFirstEmptyCard method:
-    *   N/A
-    * dealersTurn method:
-    *   TEXTVIEW:  //System.out.println("It is the dealer's turn. \nThe dealers cards are:"); //added this to print dealers first 2 cards
-        //Toast.makeText(GamePlayActivity.this, "It is the dealer's turn. \nThe dealers cards are: ", Toast.LENGTH_LONG).show();
-        TEXTVIEW1: //Toast.makeText(GamePlayActivity.this, getCardFaceValueText(players, players.length -1, i), Toast.LENGTH_LONG).show();
-           // System.out.println(getCardFaceValueText(players, players.length -1, i));
-        TEXTVIEW2:   //Toast.makeText(GamePlayActivity.this, "To see what the dealer has dealt, press enter!", Toast.LENGTH_LONG).show();
-                //System.out.println("To see what the dealer has dealt, press enter!");
-        TEXTVIEW3:   //Toast.makeText(GamePlayActivity.this, "The dealer was dealt a "
-                //+ getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
-                //+ " count up to " + dSum, Toast.LENGTH_LONG).show();
-                //System.out.println("The dealer was dealt a "
-                //+ getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
-                //+ " count up to " + dSum);
-        TEXTVIEW4:  //Toast.makeText(GamePlayActivity.this, "To see what the dealer has dealt, press enter!", Toast.LENGTH_LONG).show();
-                //System.out.println("To see what the dealer has dealt, press enter!");
-                 //Toast.makeText(GamePlayActivity.this, "The dealer was dealt a "
-                //+ getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
-                //+ " count up to " + dSum, Toast.LENGTH_LONG).show();
-                //System.out.println("The dealer was dealt a "
-                //+ getCardFaceValueText(players, players.length - 1, getPlayersFirstEmptyCardIndex(players[players.length - 1])-1) + " your cards now"
-                //+ " count up to " + dSum);
-        TEXTVIEW5:   //Toast.makeText(GamePlayActivity.this, "\nAll players cards will be displayed:", Toast.LENGTH_LONG).show();
-                //System.out.println("\nAll players cards will be displayed:");
-        TEXTVIEW6:   //Toast.makeText(GamePlayActivity.this, "Dealer busted with a total of " + dSum, Toast.LENGTH_LONG).show();
-                    //System.out.println("Dealer busted with a total of " + dSum );
-        TEXTVIEW7:   //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + ": won!", Toast.LENGTH_LONG).show();
-                            //System.out.println(playersNames.get(i) + ": won!");
-        TEXTVIEW8:   //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + ": lost.", Toast.LENGTH_LONG).show();
-                            //System.out.println(playersNames.get(i) + ": lost.");
-        TEXTVIEW9:     //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + ": won!", Toast.LENGTH_LONG).show();
-                                //System.out.println(playersNames.get(i) + ": won!");
-        TEXTVIEW10:  //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + " and the Dealer -- PUSH, DRAW", Toast.LENGTH_LONG).show();
-                                //System.out.println(playersNames.get(i) + " and the Dealer -- PUSH, DRAW");
-        TEXTVIEW11: //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + " lost.", Toast.LENGTH_LONG).show();
-                                //System.out.println(playersNames.get(i) + " lost.");
-        TEXTVIEW12: //Toast.makeText(GamePlayActivity.this, playersNames.get(i) + " lost.", Toast.LENGTH_LONG).show();
-                            //System.out.println(playersNames.get(i) + " lost.");
-    * isThereOneAceHigh method:
-    *   N/A
-    *
-    * */
-
-
-
-
-// Misc code that we are temporarily placing here in case we need it later:
-
-/* VARIABLES:
-    GridView myLayout; //changed from static
-    Gallery playersGallery;
-    List<Gallery> allGalleries;
-    ImageView image;*/
-
- /* FROM WITHIN ONCREATE() METHOD:
- //myLayout = (GridView) findViewById(R.id.gridView1);
-        //myLayout.setAdapter(new ImageAdapter(this));
-    myLinearLayout = (LinearLayout)findViewById(R.id.myLinearLayout);
-        //dynamically create a gallery for each player to hold their cards
-        for (int i = 0; i < allNames.size(); i++) { //will need to find way to account for dealer
-            grid = new GridView(GamePlayActivity.this);
-            grid.setId(i);
-            grid.setNumColumns(GridView.AUTO_FIT);
-            //grid.setPadding(5, 5, 5, 5);
-            grid.setHorizontalSpacing(5);
-            grid.setVerticalSpacing(5);
-            grid.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-            grid.setAdapter(new ImageAdapter(this));
-            myLayout.addView(grid);
-            *//*playersGallery = new Gallery(GamePlayActivity.this);
-            playersGallery.setId(i); //the allNames.get(i) method did not work here so the id is set to the array
-            playersGallery.setAdapter(new ImageAdapter(this));
-            myLayout.addView(playersGallery); *//*
-        }
-*/
-//Store the deck of cards in an integer array so that it can be accessed easily
-    /*Integer[] cards = {R.drawable.card0, R.drawable.card1, R.drawable.card2, R.drawable.card3, R.drawable.card4, R.drawable.card5, R.drawable.card6,
-            R.drawable.card7, R.drawable.card8, R.drawable.card9, R.drawable.card10, R.drawable.card11, R.drawable.card12, R.drawable.card13, R.drawable.card14,
-            R.drawable.card15, R.drawable.card16, R.drawable.card17, R.drawable.card18, R.drawable.card19, R.drawable.card20, R.drawable.card20, R.drawable.card21,
-            R.drawable.card22, R.drawable.card23, R.drawable.card24, R.drawable.card25, R.drawable.card26, R.drawable.card27, R.drawable.card28, R.drawable.card29,
-            R.drawable.card30, R.drawable.card31, R.drawable.card32, R.drawable.card33, R.drawable.card34, R.drawable.card35, R.drawable.card36, R.drawable.card37,
-            R.drawable.card38, R.drawable.card39, R.drawable.card40, R.drawable.card41, R.drawable.card42, R.drawable.card43, R.drawable.card44, R.drawable.card45,
-            R.drawable.card46, R.drawable.card47, R.drawable.card48, R.drawable.card49, R.drawable.card50, R.drawable.card51, R.drawable.card52}; **/
-//GridView grid; //"kishmo kain hu"
-//Gallery playersGallery;
-//grid = (GridView) findViewById(R.id.gridView1);
-//dynamically create Galleries with amount corresponding with # of players:
-        /*for (int i = 0; i < allNames.size(); i++) {
-            playersGallery = new Gallery(GamePlayActivity.this);
-            playersGallery.setId(i); //the allNames.get(i) method did not work here so the id is set to the array
-            playersGallery.setPadding(5, 5, 5, 5);
-            // playersGallery.setAdapter(new ImageAdapter(this));
-            grid.addView(playersGallery);
-        }**/

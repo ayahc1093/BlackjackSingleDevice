@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.student.blackjacksingledevice"
+    package="com.candeapps.blackjacksingledevice"
     android:versionCode="1"
     android:versionName="1.0.0">
 
@@ -10,11 +10,11 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_cards"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".OpeningActivity"
+            android:name="com.candeapps.blackjacksingledevice.OpeningActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,15 +23,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SetupGameActivity"
+            android:name="com.candeapps.blackjacksingledevice.SetupGameActivity"
             android:label="@string/title_activity_setup_game">
         </activity>
         <activity
-            android:name=".GamePlayActivity"
+            android:name="com.candeapps.blackjacksingledevice.GamePlayActivity"
             android:label="@string/title_activity_game_play">
         </activity>
         <activity
-            android:name=".EndGameActivity"
+            android:name="com.candeapps.blackjacksingledevice.EndGameActivity"
             android:label="@string/title_activity_end_game">
         </activity>
     </application>

@@ -1,9 +1,13 @@
-package com.example.student.blackjacksingledevice;
+package com.candeapps.blackjacksingledevice;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
+
+/*import com.candeapps.blackjacksingledevice.blackjacksingledevice.R;*/
 
 
 public class EndGameActivity extends Activity {
@@ -12,6 +16,9 @@ public class EndGameActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_game);
+
+       /* TextView thanks = (TextView)findViewById(R.id.thanks);
+        thanks.setAnimation(AnimationUtils.loadAnimation(EndGameActivity.this, android.R.anim.bounce_interpolator));*/
     }
 
     @Override

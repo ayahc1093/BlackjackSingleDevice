@@ -1,4 +1,4 @@
-package com.example.student.blackjacksingledevice;
+package com.candeapps.blackjacksingledevice;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,4 +1,4 @@
-package com.example.student.blackjacksingledevice;
+package com.candeapps.blackjacksingledevice;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+/*import com.candeapps.blackjacksingledevice.blackjacksingledevice.R;*/
+
 import java.util.ArrayList;
 import java.util.List;
 
